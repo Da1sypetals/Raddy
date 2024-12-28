@@ -4,6 +4,8 @@ use types::{mat, vec};
 
 pub mod commutative;
 pub mod compare;
+#[cfg(test)]
+mod test;
 pub mod types;
 
 #[derive(Clone)]
@@ -266,9 +268,16 @@ impl<const N: usize> Variable<N> {
         )
     }
 
-    pub fn cosh(&self) -> Self {
-        let cosh_val = self.value.cosh();
+    pub fn sinh(&self) -> Self {
         let sinh_val = self.value.sinh();
+        let cosh_val = self.value.cosh();
+
+        Self::chain(sinh_val, cosh_val, sinh_val, self)
+    }
+
+    pub fn cosh(&self) -> Self {
+        let sinh_val = self.value.sinh();
+        let cosh_val = self.value.cosh();
 
         Self::chain(cosh_val, sinh_val, cosh_val, self)
     }
@@ -462,35 +471,5 @@ impl<const N: usize> Variable<N> {
     // Computes hypot(self, b) = sqrt(self^2 + b^2) with gradients and Hessians if enabled.
     pub fn hypot(&self, other: &Self) -> Self {
         (self.mul(self).add(&other.mul(other))).sqrt()
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::Variable;
-    use approx::assert_abs_diff_eq;
-
-    const EPS: f64 = 0.00000000001;
-
-    #[test]
-    fn test_scalar() {
-        let sv = 2.4;
-        let s: Variable<1> = Variable::active_uni(2.4);
-        let g = s.powi(3).grad()[(0, 0)];
-        assert_abs_diff_eq!(g, 3.0 * sv * sv, epsilon = EPS);
-
-        let sv = -3.42;
-        let s: Variable<1> = Variable::active_uni(sv);
-        let g = s.sin().mul(&s).grad()[(0, 0)];
-        let h = s.sin().mul(&s).hess()[(0, 0)];
-        assert_abs_diff_eq!(g, sv * sv.cos() + sv.sin(), epsilon = EPS);
-        assert_abs_diff_eq!(h, 2.0 * sv.cos() - sv * sv.sin(), epsilon = EPS);
-
-        let sv = -3.42;
-        let s: Variable<1> = Variable::active_uni(sv);
-        let g = s.sin().mul(&s).grad()[(0, 0)];
-        let h = s.sin().mul(&s).hess()[(0, 0)];
-        assert_abs_diff_eq!(g, sv * sv.cos() + sv.sin(), epsilon = EPS);
-        assert_abs_diff_eq!(h, 2.0 * sv.cos() - sv * sv.sin(), epsilon = EPS);
     }
 }

@@ -9,3 +9,6 @@ Trying to port some portion of [TinyAD](https://github.com/patr-schm/TinyAD) to 
 - [ ] Multivariate
   - [ ] Gradient
   - [ ] Hessian
+
+# TODO
+1. Figure out how to implement custom scalar type in `nalgebra`.
