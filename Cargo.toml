@@ -1,0 +1,8 @@
+[package]
+name = "raddy"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+nalgebra = "*"
+approx = "0.5.1"
