@@ -6,6 +6,7 @@ pub mod commutative;
 pub mod compare;
 #[cfg(test)]
 mod test;
+pub mod testscalar;
 pub mod types;
 
 #[derive(Clone)]
@@ -98,6 +99,7 @@ impl<const N: usize> Variable<N> {
 }
 
 // ################################### Unary Operators ###################################
+
 impl<const N: usize> Variable<N> {
     pub fn neg(&self) -> Self {
         let mut res = Self::_zeroed();

@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 nalgebra = "*"
 approx = "0.5.1"
+num-traits = "*"
