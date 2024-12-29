@@ -1,9 +1,10 @@
 extern crate nalgebra as na;
 
 pub mod compare;
+pub mod det;
 /// Please Note that all `unimplemented!` methods are not intended for use.
 /// If any operation encountered these, please raise an issue.
-pub mod norms;
+pub mod additional_ops;
 pub mod scalar;
 #[cfg(test)]
 mod test;

@@ -22,4 +22,5 @@ Trying to port some portion of [TinyAD](https://github.com/patr-schm/TinyAD) to 
 2. An option to allocate hessian on heap (stack overflow encountered...)
 
 # Notes
-Test code makes use of [Symars](https://github.com/Da1sypetals/Symars), which generates Rust code from SymPy expressions.
+1. When getting numerical bugs, **First check the argument order of symars generated functions**!!!
+2. Test code makes use of [Symars](https://github.com/Da1sypetals/Symars), which generates Rust code from SymPy expressions.

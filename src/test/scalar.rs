@@ -1,7 +1,7 @@
 #![allow(unused)]
 
 use crate::{
-    norms::AdMatrixOps,
+    additional_ops::AdMatrixOps,
     scalar::commutative::Commutative,
     test::{
         symbolic::{grad_0, grad_1, grad_2, grad_3, hess_0, hess_1, hess_2},

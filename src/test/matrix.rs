@@ -1,10 +1,16 @@
 #![allow(unused)]
 
+use crate::{
+    additional_ops::AdMatrixOps,
+    test::{
+        symbolic::{grad_det, grad_det4, hess_det, hess_det4},
+        EPS,
+    },
+    Ad, GetValue,
+};
 use approx::assert_abs_diff_eq;
 use na::{Const, SMatrix, SVector};
 use rand::{thread_rng, Rng};
-
-use crate::{norms::AdMatrixOps, test::EPS, Ad, GetValue};
 
 #[test]
 fn test_norm_1() {
@@ -66,4 +72,79 @@ fn test_norm_2() {
     assert_abs_diff_eq!(g_diff, 0.0, epsilon = EPS);
 
     assert_eq!(tr.hess, SMatrix::<f64, 9, 9>::identity() * 2.0);
+}
+
+#[test]
+fn test_det3() {
+    const N_TEST_MAT_3: usize = 3;
+    type NaConst = Const<N_TEST_MAT_3>;
+    const N_VEC_3: usize = N_TEST_MAT_3 * N_TEST_MAT_3;
+
+    let mut rng = thread_rng();
+    // let vals = &[1.2, -4.2, 2.4, 0.4];
+    let vals: &[f64] = &(0..N_VEC_3)
+        .map(|_| rng.gen_range(-4.0..4.0))
+        .collect::<Vec<_>>();
+
+    // core logic #########################################################
+    let s: SVector<Ad<N_VEC_3>, N_VEC_3> = Ad::active_from_slice(vals);
+    let z = s
+        .clone()
+        // This reshape is COL MAJOR!!!!!!!!!!!!!
+        .reshape_generic(NaConst {}, NaConst {})
+        .transpose();
+
+    let det = z.determinant();
+    // core logic ends ####################################################
+
+    // dbg!(&tr.grad());
+    let expected_grad = grad_det(
+        vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8],
+    );
+    let g_diff = (expected_grad - det.grad()).norm_squared();
+    assert_abs_diff_eq!(g_diff, 0.0, epsilon = EPS);
+
+    let expected_hess = hess_det(
+        vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8],
+    );
+    assert_eq!(det.hess, expected_hess);
+}
+
+#[test]
+fn test_det4() {
+    const N_TEST_MAT_4: usize = 4;
+    type NaConst = Const<N_TEST_MAT_4>;
+    const N_VEC_4: usize = N_TEST_MAT_4 * N_TEST_MAT_4;
+
+    let mut rng = thread_rng();
+    // let vals = &[1.2, -4.2, 2.4, 0.4];
+    let vals: &[f64] = &(0..N_VEC_4)
+        .map(|_| rng.gen_range(-4.0..4.0))
+        .collect::<Vec<_>>();
+
+    // core logic #########################################################
+    let s: SVector<Ad<N_VEC_4>, N_VEC_4> = Ad::active_from_slice(vals);
+    let z = s
+        .clone()
+        // This reshape is COL MAJOR!!!!!!!!!!!!!
+        .reshape_generic(NaConst {}, NaConst {})
+        .transpose();
+
+    let det = z.determinant();
+    // core logic ends ####################################################
+
+    // dbg!(&tr.grad());
+    let expected_grad = grad_det4(
+        vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8], vals[9],
+        vals[10], vals[11], vals[12], vals[13], vals[14], vals[15],
+    );
+    let g_diff = (expected_grad - det.grad()).norm_squared();
+    assert_abs_diff_eq!(g_diff, 0.0, epsilon = EPS);
+
+    let expected_hess = hess_det4(
+        vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8], vals[9],
+        vals[10], vals[11], vals[12], vals[13], vals[14], vals[15],
+    );
+    let h_diff = (det.hess - expected_hess).norm_squared();
+    assert_abs_diff_eq!(h_diff, 0.0, epsilon = EPS);
 }
