@@ -1,11 +1,5 @@
-use commutative::Commutative;
-use core::panic;
-use nalgebra::{SMatrix, SVector};
-use types::{mat, vec};
-
 extern crate nalgebra as na;
 
-pub mod commutative;
 pub mod compare;
 /// Please Note that all `unimplemented!` methods are not intended for use.
 /// If any operation encountered these, please raise an issue.
@@ -16,6 +10,15 @@ pub mod scalar_matrix_mul;
 mod test;
 pub mod testscalar;
 pub mod types;
+
+// ######################################################################################
+// ################################### Implementation ###################################
+// ######################################################################################
+
+use nalgebra::{SMatrix, SVector};
+use scalar::commutative::Commutative;
+use std::ops::{Add, Mul};
+use types::{mat, vec};
 
 // ################################### Data Structure ###################################
 
@@ -423,14 +426,14 @@ impl<const N: usize> Ad<N> {
 
 // ################################### Binary Operators ###################################
 impl<const N: usize> Ad<N> {
-    pub fn add(&self, other: &Self) -> Self {
-        let mut res = Self::_zeroed();
-        res.value = self.value + other.value;
-        res.grad = self.grad + other.grad;
-        res.hess = self.hess + other.hess;
+    // pub fn add(&self, other: &Self) -> Self {
+    //     let mut res = Self::_zeroed();
+    //     res.value = self.value + other.value;
+    //     res.grad = self.grad + other.grad;
+    //     res.hess = self.hess + other.hess;
 
-        res
-    }
+    //     res
+    // }
 
     pub fn add_value(&self, other: f64) -> Self {
         let mut res = Self::_zeroed();
@@ -438,14 +441,14 @@ impl<const N: usize> Ad<N> {
         res
     }
 
-    pub fn sub(&self, other: &Self) -> Self {
-        let mut res = Self::_zeroed();
-        res.value = self.value - other.value;
-        res.grad = self.grad - other.grad;
-        res.hess = self.hess - other.hess;
+    // pub fn sub(&self, other: &Self) -> Self {
+    //     let mut res = Self::_zeroed();
+    //     res.value = self.value - other.value;
+    //     res.grad = self.grad - other.grad;
+    //     res.hess = self.hess - other.hess;
 
-        res
-    }
+    //     res
+    // }
 
     pub fn sub_value(&self, other: f64) -> Self {
         let mut res = Self::_zeroed();
@@ -453,17 +456,17 @@ impl<const N: usize> Ad<N> {
         res
     }
 
-    pub fn mul(&self, other: &Self) -> Self {
-        let mut res = Self::_zeroed();
-        res.value = self.value * other.value;
-        res.grad = self.grad * other.value + self.value * other.grad;
-        res.hess = other.value * self.hess
-            + self.value * other.hess
-            + self.grad * other.grad.transpose()
-            + other.grad * self.grad.transpose();
+    // pub fn mul(&self, other: &Self) -> Self {
+    //     let mut res = Self::_zeroed();
+    //     res.value = self.value * other.value;
+    //     res.grad = self.grad * other.value + self.value * other.grad;
+    //     res.hess = other.value * self.hess
+    //         + self.value * other.hess
+    //         + self.grad * other.grad.transpose()
+    //         + other.grad * self.grad.transpose();
 
-        res
-    }
+    //     res
+    // }
 
     pub fn mul_value(&self, other: f64) -> Self {
         let mut res = Self::_zeroed();
@@ -474,24 +477,24 @@ impl<const N: usize> Ad<N> {
         res
     }
 
-    pub fn div(&self, other: &Self) -> Self {
-        if other.value.abs() == 0.0 {
-            // We don't want to mute this behavior or get NaN as this is fucking undebuggable.
-            panic!("Division By Zero!");
-        }
+    // pub fn div(&self, other: &Self) -> Self {
+    //     if other.value.abs() == 0.0 {
+    //         // We don't want to mute this behavior or get NaN as this is fucking undebuggable.
+    //         panic!("Division By Zero!");
+    //     }
 
-        let mut res = Self::_zeroed();
-        res.value = self.value / other.value;
-        res.grad =
-            (other.value * self.grad - self.value * other.grad) / (other.value * other.value);
-        res.hess = (self.hess
-            - res.grad * other.grad.transpose()
-            - other.grad * res.grad.transpose()
-            - res.value * other.hess)
-            / other.value;
+    //     let mut res = Self::_zeroed();
+    //     res.value = self.value / other.value;
+    //     res.grad =
+    //         (other.value * self.grad - self.value * other.grad) / (other.value * other.value);
+    //     res.hess = (self.hess
+    //         - res.grad * other.grad.transpose()
+    //         - other.grad * res.grad.transpose()
+    //         - res.value * other.hess)
+    //         / other.value;
 
-        res
-    }
+    //     res
+    // }
 
     pub fn recip(&self) -> Self {
         1_f64.div_var(self)
