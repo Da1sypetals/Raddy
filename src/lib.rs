@@ -1,15 +1,20 @@
 use commutative::Commutative;
 use core::panic;
+use nalgebra::SVector;
 use types::{mat, vec};
 
 pub mod commutative;
 pub mod compare;
+/// Please Note that all `unimplemented!` methods are not intended for use.
+/// If any operation encountered these, please raise an issue.
+pub mod nalgebra_scalar;
+pub mod norms;
 #[cfg(test)]
 mod test;
 pub mod testscalar;
 pub mod types;
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct Variable<const N: usize> {
     pub(crate) value: f64,
     pub(crate) grad: vec<N>,
@@ -69,7 +74,7 @@ impl<const N: usize> Variable<N> {
         }
     }
 
-    fn _active_scalar(value: f64, index: usize) -> Self {
+    fn _active_scalar_with_index(value: f64, index: usize) -> Self {
         let mut res = Self::_zeroed();
 
         res.value = value;
@@ -78,7 +83,26 @@ impl<const N: usize> Variable<N> {
         res
     }
 
-    // pub fn active_vector(value: f64, index: usize) -> Self {}
+    pub fn active_vector(values: &SVector<f64, N>) -> SVector<Self, N> {
+        let mut scalars = Vec::new();
+        for i in 0..N {
+            let scalar = Self::_active_scalar_with_index(values[i], i);
+            scalars.push(scalar);
+        }
+
+        SVector::from_column_slice(&scalars)
+    }
+
+    pub fn active_from_slice(values: &[f64]) -> SVector<Self, N> {
+        assert_eq!(
+            values.len(),
+            N,
+            "Slice length mismatch: expected {}, got {}",
+            N,
+            values.len()
+        );
+        Self::active_vector(&SVector::from_column_slice(values))
+    }
 }
 
 impl<const N: usize> Variable<N> {

@@ -1,10 +1,9 @@
+use nalgebra::{Matrix3, SMatrix};
+use num_traits::{Num, One, Signed, Zero};
 use std::{
     fmt::Display,
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, RemAssign, Sub, SubAssign},
 };
-
-use nalgebra::SMatrix;
-use num_traits::{Num, One, Signed, Zero};
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct Val {}
@@ -19,6 +18,14 @@ impl Add for Val {
     type Output = Val;
 
     fn add(self, rhs: Self) -> Self::Output {
+        Val {}
+    }
+}
+
+impl Add<f64> for Val {
+    type Output = Val;
+
+    fn add(self, rhs: f64) -> Self::Output {
         Val {}
     }
 }
@@ -142,6 +149,7 @@ impl Signed for Val {
 
 #[test]
 fn example() {
+    let fm = SMatrix::<f64, 3, 3>::zeros();
     let mat: SMatrix<Val, 3, 3> = SMatrix::from_row_slice(&[
         Val {},
         Val {},

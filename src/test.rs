@@ -1,7 +1,8 @@
 #![allow(unused)]
 
-use crate::{commutative::Commutative, Variable};
+use crate::{commutative::Commutative, norms::LkNorm, Variable};
 use approx::assert_abs_diff_eq;
+use nalgebra::{SMatrix, SVector};
 
 const EPS: f64 = 1e-12;
 const RELRATIO: f64 = 6e-4;
@@ -361,4 +362,37 @@ fn test_scalar() {
 
     let g = expr.grad()[(0, 0)];
     float_close(g, grad_3(sv));
+}
+
+#[test]
+fn test_matrix() {
+    let vals = &[1.2, -4.2, 2.4, 0.4];
+
+    // Create a 4-dimensional active vector from the slice
+    let s: SVector<Variable<4>, 4> = Variable::active_from_slice(vals);
+
+    // Compute the L2 norm of the vector
+    let z = s.l2_norm();
+
+    // Trigger computation of gradients by calling `grad` on z
+
+    // Debug print the gradients of each component of s
+    dbg!(&z.grad);
+
+    // Here's how we might compute the expected gradient for L2 norm:
+    // The gradient of the L2 norm with respect to x_i is x_i / ||x||
+    let norm = (vals.iter().map(|&x| x * x).sum::<f64>()).sqrt();
+    let expected_grad = vals.iter().map(|&x| x / norm).collect::<Vec<f64>>();
+
+    // Check if the gradients are close enough to the expected values
+    // Using an approximate comparison since floating-point arithmetic isn't exact
+    for (i, (computed, &expected)) in z.grad.iter().zip(expected_grad.iter()).enumerate() {
+        assert!(
+            (computed - expected).abs() < 1e-6,
+            "Mismatch at index {}: computed = {}, expected = {}",
+            i,
+            computed,
+            expected
+        );
+    }
 }
