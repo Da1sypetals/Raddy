@@ -1,5 +1,6 @@
 #![allow(unused)]
 use crate::Variable;
+use nalgebra::SMatrix;
 use num_traits::{Num, One, Signed, Zero};
 use std::{
     fmt::Display,
@@ -190,5 +191,67 @@ impl<const N: usize> Signed for Variable<N> {
 
     fn is_negative(&self) -> bool {
         self.value < -0.0
+    }
+}
+
+// ############# Multiply scalar and matrix: commutative #############
+
+impl<const N: usize, const R: usize, const C: usize> Mul<&SMatrix<Variable<N>, R, C>>
+    for &Variable<N>
+{
+    type Output = SMatrix<Variable<N>, R, C>;
+
+    fn mul(self, rhs: &SMatrix<Variable<N>, R, C>) -> Self::Output {
+        let mut res = rhs.clone();
+        for _ in 0..R {
+            for _ in 0..C {
+                res *= self.clone();
+            }
+        }
+        return res;
+    }
+}
+
+impl<const N: usize, const R: usize, const C: usize> Mul<SMatrix<Variable<N>, R, C>>
+    for &Variable<N>
+{
+    type Output = SMatrix<Variable<N>, R, C>;
+
+    fn mul(self, rhs: SMatrix<Variable<N>, R, C>) -> Self::Output {
+        let mut res = rhs.clone();
+        for _ in 0..R {
+            for _ in 0..C {
+                res *= self.clone();
+            }
+        }
+        return res;
+    }
+}
+
+impl<const N: usize, const R: usize, const C: usize> Mul<&SMatrix<Variable<N>, R, C>>
+    for Variable<N>
+{
+    type Output = SMatrix<Variable<N>, R, C>;
+
+    fn mul(self, rhs: &SMatrix<Variable<N>, R, C>) -> Self::Output {
+        let mut res = rhs.clone();
+        res *= self.clone();
+        return res;
+    }
+}
+
+impl<const N: usize, const R: usize, const C: usize> Mul<SMatrix<Variable<N>, R, C>>
+    for Variable<N>
+{
+    type Output = SMatrix<Variable<N>, R, C>;
+
+    fn mul(self, rhs: SMatrix<Variable<N>, R, C>) -> Self::Output {
+        let mut res = rhs.clone();
+        for _ in 0..R {
+            for _ in 0..C {
+                res *= self.clone();
+            }
+        }
+        return res;
     }
 }

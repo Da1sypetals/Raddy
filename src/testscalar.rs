@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use nalgebra::{Matrix3, SMatrix};
 use num_traits::{Num, One, Signed, Zero};
 use std::{
@@ -165,6 +167,8 @@ fn example() {
     let r = &mat * &mat;
     let n = mat.abs();
     let x = mat.transpose();
+    // let m = Val {} * mat;
+    let m = 2.0 * Matrix3::identity();
 
     println!("{}\n{}\n{}", r, n, x);
 }

@@ -1,6 +1,6 @@
 use commutative::Commutative;
 use core::panic;
-use nalgebra::SVector;
+use nalgebra::{SMatrix, SVector};
 use types::{mat, vec};
 
 pub mod commutative;
@@ -37,6 +37,25 @@ impl<const N: usize> Variable<N> {
     }
 }
 
+pub trait GetValue<const R: usize, const C: usize> {
+    type Value;
+
+    fn value(&self) -> Self::Value;
+}
+
+impl<const N: usize, const R: usize, const C: usize> GetValue<R, C> for SMatrix<Variable<N>, R, C> {
+    type Value = SMatrix<f64, R, C>;
+    fn value(&self) -> Self::Value {
+        let mut val = Self::Value::zeros();
+        for r in 0..R {
+            for c in 0..C {
+                val[(r, c)] = self[(r, c)].value;
+            }
+        }
+        val
+    }
+}
+
 // ################################### Constructors ###################################
 
 impl Variable<1> {
@@ -59,6 +78,14 @@ impl Variable<1> {
 }
 
 impl<const N: usize> Variable<N> {
+    pub fn inactive_value(value: f64) -> Self {
+        let mut res = Self::_zeroed();
+
+        res.value = value;
+
+        res
+    }
+
     pub fn given(value: f64, grad: &vec<N>, hess: &mat<N>) -> Self {
         Self {
             value,
