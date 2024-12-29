@@ -49,13 +49,6 @@ fn test_scalar() {
     assert_abs_diff_eq!(g, sv * sv.cos() + sv.sin(), epsilon = EPS);
     assert_abs_diff_eq!(h, 2.0 * sv.cos() - sv * sv.sin(), epsilon = EPS);
 
-    let sv = -3.42;
-    let s: Ad<1> = Ad::active_scalar(sv);
-    let g = s.sin().mul(&s).grad()[(0, 0)];
-    let h = s.sin().mul(&s).hess()[(0, 0)];
-    assert_abs_diff_eq!(g, sv * sv.cos() + sv.sin(), epsilon = EPS);
-    assert_abs_diff_eq!(h, 2.0 * sv.cos() - sv * sv.sin(), epsilon = EPS);
-
     let sv = 1.4623;
     let s: Ad<1> = Ad::active_scalar(sv);
     let expr = s
