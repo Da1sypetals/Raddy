@@ -23,13 +23,6 @@ pub struct Variable<const N: usize> {
 
 impl<const N: usize> Variable<N> {
     /// Makes all-zeroed Scalar. Only used internally.
-    fn _zeroed() -> Self {
-        Self {
-            value: 0.0,
-            grad: vec::zeros(),
-            hess: mat::zeros(),
-        }
-    }
 
     pub fn value(&self) -> f64 {
         self.value
@@ -74,15 +67,6 @@ impl<const N: usize> Variable<N> {
         }
     }
 
-    fn _active_scalar_with_index(value: f64, index: usize) -> Self {
-        let mut res = Self::_zeroed();
-
-        res.value = value;
-        res.grad[index] = 1.0;
-
-        res
-    }
-
     pub fn active_vector(values: &SVector<f64, N>) -> SVector<Self, N> {
         let mut scalars = Vec::new();
         for i in 0..N {
@@ -104,6 +88,29 @@ impl<const N: usize> Variable<N> {
         Self::active_vector(&SVector::from_column_slice(values))
     }
 }
+
+// ################################### Private Constructors ###################################
+
+impl<const N: usize> Variable<N> {
+    fn _active_scalar_with_index(value: f64, index: usize) -> Self {
+        let mut res = Self::_zeroed();
+
+        res.value = value;
+        res.grad[index] = 1.0;
+
+        res
+    }
+
+    fn _zeroed() -> Self {
+        Self {
+            value: 0.0,
+            grad: vec::zeros(),
+            hess: mat::zeros(),
+        }
+    }
+}
+
+// ################################### Utils ###################################
 
 impl<const N: usize> Variable<N> {
     fn chain(
