@@ -65,13 +65,13 @@ impl<const N: usize, const R: usize, const C: usize> AdMatrixOps for SMatrix<Ad<
         let mut res = self[0].clone();
         for r in 0..R {
             for c in 0..C {
-                res = res.max(&self[(r, c)].clone());
+                res = res.max(&self[(r, c)].abs().clone());
             }
         }
         res
     }
 
     fn scale(&self, factor: f64) -> Self {
-        Ad::inactive_value(factor) * self
+        Ad::inactive_scalar(factor) * self
     }
 }

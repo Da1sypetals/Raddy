@@ -38,26 +38,26 @@ fn float_close(left: f64, right: f64) {
 #[test]
 fn test_scalar() {
     let sv = 2.4;
-    let s: Ad<1> = Ad::active_uni(2.4);
+    let s: Ad<1> = Ad::active_scalar(2.4);
     let g = s.powi(3).grad()[(0, 0)];
     assert_abs_diff_eq!(g, 3.0 * sv * sv, epsilon = EPS);
 
     let sv = -3.42;
-    let s: Ad<1> = Ad::active_uni(sv);
+    let s: Ad<1> = Ad::active_scalar(sv);
     let g = s.sin().mul(&s).grad()[(0, 0)];
     let h = s.sin().mul(&s).hess()[(0, 0)];
     assert_abs_diff_eq!(g, sv * sv.cos() + sv.sin(), epsilon = EPS);
     assert_abs_diff_eq!(h, 2.0 * sv.cos() - sv * sv.sin(), epsilon = EPS);
 
     let sv = -3.42;
-    let s: Ad<1> = Ad::active_uni(sv);
+    let s: Ad<1> = Ad::active_scalar(sv);
     let g = s.sin().mul(&s).grad()[(0, 0)];
     let h = s.sin().mul(&s).hess()[(0, 0)];
     assert_abs_diff_eq!(g, sv * sv.cos() + sv.sin(), epsilon = EPS);
     assert_abs_diff_eq!(h, 2.0 * sv.cos() - sv * sv.sin(), epsilon = EPS);
 
     let sv = 1.4623;
-    let s: Ad<1> = Ad::active_uni(sv);
+    let s: Ad<1> = Ad::active_scalar(sv);
     let expr = s
         .cosh()
         .mul(&s.sinh().mul(&1.245.div_var(&s.powi(-2))))
@@ -68,7 +68,7 @@ fn test_scalar() {
     assert_abs_diff_eq!(h, hess_0(sv), epsilon = EPS);
 
     let sv = 31.8;
-    let s: Ad<1> = Ad::active_uni(sv);
+    let s: Ad<1> = Ad::active_scalar(sv);
     let expr = s
         .tan()
         .mul(&s.asinh())
@@ -84,7 +84,7 @@ fn test_scalar() {
 #[test]
 fn test_relative() {
     let sv = 0.2127;
-    let s: Ad<1> = Ad::active_uni(sv);
+    let s: Ad<1> = Ad::active_scalar(sv);
     let expr = s
         .tan()
         .mul(&s.asinh().mul(&s.atanh()))
@@ -100,7 +100,7 @@ fn test_relative() {
     float_close(h, hess_2(sv));
 
     let sv = 0.8235;
-    let s: Ad<1> = Ad::active_uni(sv);
+    let s: Ad<1> = Ad::active_scalar(sv);
     let expr = s
         .tan()
         .mul(&s.asinh().square())
