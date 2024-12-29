@@ -14,9 +14,7 @@ pub mod types;
 // ################################### Implementation ###################################
 // ######################################################################################
 
-use na::{Matrix, Matrix3};
 use nalgebra::{SMatrix, SVector};
-use num_traits::Zero;
 use scalar::commutative::Commutative;
 use std::ops::{Add, Mul};
 use types::{mat, vec};
