@@ -3,16 +3,21 @@ use core::panic;
 use nalgebra::{SMatrix, SVector};
 use types::{mat, vec};
 
+extern crate nalgebra as na;
+
 pub mod commutative;
 pub mod compare;
 /// Please Note that all `unimplemented!` methods are not intended for use.
 /// If any operation encountered these, please raise an issue.
 pub mod nalgebra_scalar;
 pub mod norms;
+pub mod scalar_matrix_mul;
 #[cfg(test)]
 mod test;
 pub mod testscalar;
 pub mod types;
+
+// ################################### Data Structure ###################################
 
 #[derive(Debug, Clone)]
 pub struct Scalar<const N: usize> {
