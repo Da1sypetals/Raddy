@@ -14,6 +14,7 @@ pub trait LkNorm {
 impl<const N: usize, const R: usize, const C: usize> LkNorm for SMatrix<Variable<N>, R, C> {
     type Scalar = Variable<N>;
 
+    /// Sum of absolute of all components
     fn l1_norm(&self) -> Self::Scalar {
         let mut res = Variable::_zeroed();
         for r in 0..R {
@@ -24,6 +25,7 @@ impl<const N: usize, const R: usize, const C: usize> LkNorm for SMatrix<Variable
         res
     }
 
+    /// Pythagoras theorem
     fn l2_norm(&self) -> Self::Scalar {
         let mut res = Variable::_zeroed();
         for r in 0..R {
