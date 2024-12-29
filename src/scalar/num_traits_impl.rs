@@ -21,18 +21,8 @@ impl<const N: usize> Zero for Ad<N> {
 
     fn is_zero(&self) -> bool {
         self.value.abs() == 0.0
-            && self
-                .grad
-                .abs()
-                .as_slice()
-                .into_iter()
-                .all(|&x| x.abs() == 0.0)
-            && self
-                .hess
-                .abs()
-                .as_slice()
-                .into_iter()
-                .all(|&x| x.abs() == 0.0)
+            && self.grad.as_slice().into_iter().all(|&x| x.abs() == 0.0)
+            && self.hess.as_slice().into_iter().all(|&x| x.abs() == 0.0)
     }
 }
 
