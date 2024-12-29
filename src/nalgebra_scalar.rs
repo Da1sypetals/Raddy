@@ -1,5 +1,5 @@
 #![allow(unused)]
-use crate::Variable;
+use crate::Scalar;
 use nalgebra::SMatrix;
 use num_traits::{Num, One, Signed, Zero};
 use std::{
@@ -7,13 +7,13 @@ use std::{
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, RemAssign, Sub, SubAssign},
 };
 
-impl<const N: usize> Display for Variable<N> {
+impl<const N: usize> Display for Scalar<N> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "Ad[{}]", self.value)
     }
 }
 
-impl<const N: usize> Neg for Variable<N> {
+impl<const N: usize> Neg for Scalar<N> {
     type Output = Self;
 
     fn neg(self) -> Self::Output {
@@ -26,7 +26,7 @@ impl<const N: usize> Neg for Variable<N> {
     }
 }
 
-impl<const N: usize> Add for Variable<N> {
+impl<const N: usize> Add for Scalar<N> {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self::Output {
@@ -39,13 +39,13 @@ impl<const N: usize> Add for Variable<N> {
     }
 }
 
-impl<const N: usize> AddAssign for Variable<N> {
+impl<const N: usize> AddAssign for Scalar<N> {
     fn add_assign(&mut self, rhs: Self) {
         *self = self.clone() + rhs;
     }
 }
 
-impl<const N: usize> Sub for Variable<N> {
+impl<const N: usize> Sub for Scalar<N> {
     type Output = Self;
 
     fn sub(self, rhs: Self) -> Self::Output {
@@ -58,13 +58,13 @@ impl<const N: usize> Sub for Variable<N> {
     }
 }
 
-impl<const N: usize> SubAssign for Variable<N> {
+impl<const N: usize> SubAssign for Scalar<N> {
     fn sub_assign(&mut self, rhs: Self) {
         *self = self.clone() - rhs;
     }
 }
 
-impl<const N: usize> Mul for Variable<N> {
+impl<const N: usize> Mul for Scalar<N> {
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self::Output {
@@ -80,13 +80,13 @@ impl<const N: usize> Mul for Variable<N> {
     }
 }
 
-impl<const N: usize> MulAssign for Variable<N> {
+impl<const N: usize> MulAssign for Scalar<N> {
     fn mul_assign(&mut self, rhs: Self) {
         *self = self.clone() * rhs;
     }
 }
 
-impl<const N: usize> Div for Variable<N> {
+impl<const N: usize> Div for Scalar<N> {
     type Output = Self;
 
     fn div(self, rhs: Self) -> Self {
@@ -108,13 +108,13 @@ impl<const N: usize> Div for Variable<N> {
     }
 }
 
-impl<const N: usize> DivAssign for Variable<N> {
+impl<const N: usize> DivAssign for Scalar<N> {
     fn div_assign(&mut self, rhs: Self) {
         *self = self.clone() / rhs;
     }
 }
 
-impl<const N: usize> Rem for Variable<N> {
+impl<const N: usize> Rem for Scalar<N> {
     type Output = Self;
 
     fn rem(self, rhs: Self) -> Self {
@@ -122,15 +122,15 @@ impl<const N: usize> Rem for Variable<N> {
     }
 }
 
-impl<const N: usize> RemAssign for Variable<N> {
+impl<const N: usize> RemAssign for Scalar<N> {
     fn rem_assign(&mut self, rhs: Self) {
         unimplemented!()
     }
 }
 
-impl<const N: usize> Zero for Variable<N> {
+impl<const N: usize> Zero for Scalar<N> {
     fn zero() -> Self {
-        Variable::_zeroed()
+        Scalar::_zeroed()
     }
 
     fn is_zero(&self) -> bool {
@@ -150,15 +150,15 @@ impl<const N: usize> Zero for Variable<N> {
     }
 }
 
-impl<const N: usize> One for Variable<N> {
+impl<const N: usize> One for Scalar<N> {
     fn one() -> Self {
-        let mut res = Variable::_zeroed();
+        let mut res = Scalar::_zeroed();
         res.value = 1.0;
         res
     }
 }
 
-impl<const N: usize> Num for Variable<N> {
+impl<const N: usize> Num for Scalar<N> {
     type FromStrRadixErr = ();
 
     fn from_str_radix(str: &str, radix: u32) -> Result<Self, Self::FromStrRadixErr> {
@@ -166,7 +166,7 @@ impl<const N: usize> Num for Variable<N> {
     }
 }
 
-impl<const N: usize> Signed for Variable<N> {
+impl<const N: usize> Signed for Scalar<N> {
     fn abs(&self) -> Self {
         let mut res = Self::_zeroed();
         res.value = self.value.abs();
@@ -196,12 +196,10 @@ impl<const N: usize> Signed for Variable<N> {
 
 // ############# Multiply scalar and matrix: commutative #############
 
-impl<const N: usize, const R: usize, const C: usize> Mul<&SMatrix<Variable<N>, R, C>>
-    for &Variable<N>
-{
-    type Output = SMatrix<Variable<N>, R, C>;
+impl<const N: usize, const R: usize, const C: usize> Mul<&SMatrix<Scalar<N>, R, C>> for &Scalar<N> {
+    type Output = SMatrix<Scalar<N>, R, C>;
 
-    fn mul(self, rhs: &SMatrix<Variable<N>, R, C>) -> Self::Output {
+    fn mul(self, rhs: &SMatrix<Scalar<N>, R, C>) -> Self::Output {
         let mut res = rhs.clone();
         for _ in 0..R {
             for _ in 0..C {
@@ -212,12 +210,10 @@ impl<const N: usize, const R: usize, const C: usize> Mul<&SMatrix<Variable<N>, R
     }
 }
 
-impl<const N: usize, const R: usize, const C: usize> Mul<SMatrix<Variable<N>, R, C>>
-    for &Variable<N>
-{
-    type Output = SMatrix<Variable<N>, R, C>;
+impl<const N: usize, const R: usize, const C: usize> Mul<SMatrix<Scalar<N>, R, C>> for &Scalar<N> {
+    type Output = SMatrix<Scalar<N>, R, C>;
 
-    fn mul(self, rhs: SMatrix<Variable<N>, R, C>) -> Self::Output {
+    fn mul(self, rhs: SMatrix<Scalar<N>, R, C>) -> Self::Output {
         let mut res = rhs.clone();
         for _ in 0..R {
             for _ in 0..C {
@@ -228,24 +224,20 @@ impl<const N: usize, const R: usize, const C: usize> Mul<SMatrix<Variable<N>, R,
     }
 }
 
-impl<const N: usize, const R: usize, const C: usize> Mul<&SMatrix<Variable<N>, R, C>>
-    for Variable<N>
-{
-    type Output = SMatrix<Variable<N>, R, C>;
+impl<const N: usize, const R: usize, const C: usize> Mul<&SMatrix<Scalar<N>, R, C>> for Scalar<N> {
+    type Output = SMatrix<Scalar<N>, R, C>;
 
-    fn mul(self, rhs: &SMatrix<Variable<N>, R, C>) -> Self::Output {
+    fn mul(self, rhs: &SMatrix<Scalar<N>, R, C>) -> Self::Output {
         let mut res = rhs.clone();
         res *= self.clone();
         return res;
     }
 }
 
-impl<const N: usize, const R: usize, const C: usize> Mul<SMatrix<Variable<N>, R, C>>
-    for Variable<N>
-{
-    type Output = SMatrix<Variable<N>, R, C>;
+impl<const N: usize, const R: usize, const C: usize> Mul<SMatrix<Scalar<N>, R, C>> for Scalar<N> {
+    type Output = SMatrix<Scalar<N>, R, C>;
 
-    fn mul(self, rhs: SMatrix<Variable<N>, R, C>) -> Self::Output {
+    fn mul(self, rhs: SMatrix<Scalar<N>, R, C>) -> Self::Output {
         let mut res = rhs.clone();
         for _ in 0..R {
             for _ in 0..C {

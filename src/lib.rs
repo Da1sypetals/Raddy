@@ -15,13 +15,13 @@ pub mod testscalar;
 pub mod types;
 
 #[derive(Debug, Clone)]
-pub struct Variable<const N: usize> {
+pub struct Scalar<const N: usize> {
     pub(crate) value: f64,
     pub(crate) grad: vec<N>,
     pub(crate) hess: mat<N>,
 }
 
-impl<const N: usize> Variable<N> {
+impl<const N: usize> Scalar<N> {
     /// Makes all-zeroed Scalar. Only used internally.
 
     pub fn value(&self) -> f64 {
@@ -43,7 +43,7 @@ pub trait GetValue<const R: usize, const C: usize> {
     fn value(&self) -> Self::Value;
 }
 
-impl<const N: usize, const R: usize, const C: usize> GetValue<R, C> for SMatrix<Variable<N>, R, C> {
+impl<const N: usize, const R: usize, const C: usize> GetValue<R, C> for SMatrix<Scalar<N>, R, C> {
     type Value = SMatrix<f64, R, C>;
     fn value(&self) -> Self::Value {
         let mut val = Self::Value::zeros();
@@ -58,7 +58,7 @@ impl<const N: usize, const R: usize, const C: usize> GetValue<R, C> for SMatrix<
 
 // ################################### Constructors ###################################
 
-impl Variable<1> {
+impl Scalar<1> {
     pub fn given_values(value: f64, grad: f64, hess: f64) -> Self {
         Self {
             value,
@@ -77,7 +77,7 @@ impl Variable<1> {
     }
 }
 
-impl<const N: usize> Variable<N> {
+impl<const N: usize> Scalar<N> {
     pub fn inactive_value(value: f64) -> Self {
         let mut res = Self::_zeroed();
 
@@ -118,7 +118,7 @@ impl<const N: usize> Variable<N> {
 
 // ################################### Private Constructors ###################################
 
-impl<const N: usize> Variable<N> {
+impl<const N: usize> Scalar<N> {
     fn _active_scalar_with_index(value: f64, index: usize) -> Self {
         let mut res = Self::_zeroed();
 
@@ -139,7 +139,7 @@ impl<const N: usize> Variable<N> {
 
 // ################################### Utils ###################################
 
-impl<const N: usize> Variable<N> {
+impl<const N: usize> Scalar<N> {
     fn chain(
         value: f64, // f
         d: f64,     // df/da
@@ -158,7 +158,7 @@ impl<const N: usize> Variable<N> {
 
 // ################################### Unary Operators ###################################
 
-impl<const N: usize> Variable<N> {
+impl<const N: usize> Scalar<N> {
     pub fn neg(&self) -> Self {
         let mut res = Self::_zeroed();
         res.value = -self.value;
@@ -398,7 +398,7 @@ impl<const N: usize> Variable<N> {
 }
 
 // ################################### Binary Operators ###################################
-impl<const N: usize> Variable<N> {
+impl<const N: usize> Scalar<N> {
     pub fn add(&self, other: &Self) -> Self {
         let mut res = Self::_zeroed();
         res.value = self.value + other.value;

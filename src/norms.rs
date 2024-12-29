@@ -1,6 +1,6 @@
 use nalgebra::SMatrix;
 
-use crate::Variable;
+use crate::Scalar;
 
 pub trait LkNorm {
     type Scalar;
@@ -11,12 +11,12 @@ pub trait LkNorm {
     fn linf_norm(&self) -> Self::Scalar;
 }
 
-impl<const N: usize, const R: usize, const C: usize> LkNorm for SMatrix<Variable<N>, R, C> {
-    type Scalar = Variable<N>;
+impl<const N: usize, const R: usize, const C: usize> LkNorm for SMatrix<Scalar<N>, R, C> {
+    type Scalar = Scalar<N>;
 
     /// Sum of absolute of all components
     fn l1_norm(&self) -> Self::Scalar {
-        let mut res = Variable::_zeroed();
+        let mut res = Scalar::_zeroed();
         for r in 0..R {
             for c in 0..C {
                 res += self[(r, c)].abs().clone();
@@ -27,7 +27,7 @@ impl<const N: usize, const R: usize, const C: usize> LkNorm for SMatrix<Variable
 
     /// Pythagoras theorem
     fn l2_norm(&self) -> Self::Scalar {
-        let mut res = Variable::_zeroed();
+        let mut res = Scalar::_zeroed();
         for r in 0..R {
             for c in 0..C {
                 res += self[(r, c)].square();
@@ -37,7 +37,7 @@ impl<const N: usize, const R: usize, const C: usize> LkNorm for SMatrix<Variable
     }
 
     fn l2_norm_squared(&self) -> Self::Scalar {
-        let mut res = Variable::_zeroed();
+        let mut res = Scalar::_zeroed();
         for r in 0..R {
             for c in 0..C {
                 res += self[(r, c)].square();
@@ -47,7 +47,7 @@ impl<const N: usize, const R: usize, const C: usize> LkNorm for SMatrix<Variable
     }
 
     fn lk_norm(&self, k: u32) -> Self::Scalar {
-        let mut res = Variable::_zeroed();
+        let mut res = Scalar::_zeroed();
         for r in 0..R {
             for c in 0..C {
                 res += self[(r, c)].powi(k as i32);
