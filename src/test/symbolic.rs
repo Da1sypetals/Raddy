@@ -12,7 +12,213 @@
 
 */
 #![allow(unused)]
-#[rustfmt::skip]
+
+#[inline]
+pub fn grad_costan(s: f64) -> f64 {
+    let __intermediate_result_4 = (s).tan();
+
+    ((((1.0000000000000000000_f64) + ((__intermediate_result_4).powi(2))) * ((s).cos()))
+        + (-(((s).sin()) * (__intermediate_result_4))))
+}
+
+#[inline]
+pub fn hess_costan(s: f64) -> f64 {
+    let __intermediate_result_2 = (s).cos();
+    let __intermediate_result_3 = (s).tan();
+    let __intermediate_result_6 = ((s).tan()).powi(2);
+
+    ((-((__intermediate_result_2) * (__intermediate_result_3)))
+        + ((-2.0000000000000000000_f64)
+            * ((1.0000000000000000000_f64) + (__intermediate_result_6))
+            * ((s).sin()))
+        + (((2.0000000000000000000_f64)
+            + ((2.0000000000000000000_f64) * (__intermediate_result_6)))
+            * (__intermediate_result_2)
+            * (__intermediate_result_3)))
+}
+
+#[inline]
+pub fn grad_alpha(s: f64) -> f64 {
+    let __intermediate_result_2 =
+        ((1.0000000000000000000_f64) + (-((s).powi(2)))).powf(-0.50000000000000000000_f64);
+    let __intermediate_result_6 = (s).tan();
+
+    (((__intermediate_result_2) * (__intermediate_result_6))
+        + (((1.0000000000000000000_f64) + ((__intermediate_result_6).powi(2))) * ((s).asin()))
+        + (-((s) * (__intermediate_result_2)))
+        + ((s).acos()))
+}
+
+#[inline]
+pub fn hess_alpha(s: f64) -> f64 {
+    let __intermediate_result_2 =
+        ((1.0000000000000000000_f64) + (-((s).powi(2)))).powf(-0.50000000000000000000_f64);
+    let __intermediate_result_7 =
+        ((1.0000000000000000000_f64) + (-((s).powi(2)))).powf(-1.5000000000000000000_f64);
+    let __intermediate_result_10 = ((s).tan()).powi(2);
+    let __intermediate_result_11 = (s).tan();
+
+    (((-2.0000000000000000000_f64) * (__intermediate_result_2))
+        + (-(((s).powi(2)) * (__intermediate_result_7)))
+        + ((2.0000000000000000000_f64)
+            * (__intermediate_result_2)
+            * ((1.0000000000000000000_f64) + (__intermediate_result_10)))
+        + ((s) * (__intermediate_result_7) * (__intermediate_result_11))
+        + (((2.0000000000000000000_f64)
+            + ((2.0000000000000000000_f64) * (__intermediate_result_10)))
+            * ((s).asin())
+            * (__intermediate_result_11)))
+}
+
+#[inline]
+pub fn grad_beta(s: f64) -> f64 {
+    let __intermediate_result_2 = (s).cosh();
+    let __intermediate_result_5 = (s).recip();
+    let __intermediate_result_8 = (s).sinh();
+
+    (((__intermediate_result_2).powi(-3))
+        + (((s).atan2((__intermediate_result_5))) * (__intermediate_result_2))
+        + ((-3.0000000000000000000_f64)
+            * (s)
+            * ((__intermediate_result_2).powi(-4))
+            * (__intermediate_result_8))
+        + ((2.0000000000000000000_f64)
+            * (__intermediate_result_5)
+            * ((((s).powi(-2)) + ((s).powi(2))).recip())
+            * (__intermediate_result_8)))
+}
+
+#[inline]
+pub fn hess_beta(s: f64) -> f64 {
+    let __intermediate_result_3 = (s).recip();
+    let __intermediate_result_4 = (s).sinh();
+    let __intermediate_result_7 = (s).cosh();
+    let __intermediate_result_12 = (((s).powi(-2)) + ((s).powi(2))).recip();
+
+    ((((s).atan2((__intermediate_result_3))) * (__intermediate_result_4))
+        + ((-6.0000000000000000000_f64)
+            * ((__intermediate_result_7).powi(-4))
+            * (__intermediate_result_4))
+        + ((-3.0000000000000000000_f64) * (s) * ((__intermediate_result_7).powi(-3)))
+        + ((-2.0000000000000000000_f64)
+            * ((s).powi(-2))
+            * (__intermediate_result_12)
+            * (__intermediate_result_4))
+        + ((4.0000000000000000000_f64)
+            * (__intermediate_result_3)
+            * (__intermediate_result_12)
+            * (__intermediate_result_7))
+        + ((12.000000000000000000_f64)
+            * (s)
+            * ((__intermediate_result_7).powi(-5))
+            * ((__intermediate_result_4).powi(2)))
+        + ((2.0000000000000000000_f64)
+            * (__intermediate_result_3)
+            * ((((s).powi(-2)) + ((s).powi(2))).powi(-2))
+            * (((-2.0000000000000000000_f64) * (s))
+                + ((2.0000000000000000000_f64) * ((s).powi(-3))))
+            * (__intermediate_result_4)))
+}
+
+#[inline]
+pub fn grad_kappa(s: f64) -> f64 {
+    let __intermediate_result_2 = (s).tanh();
+    let __intermediate_result_4 = (s).powi(-2);
+    let __intermediate_result_11 = (((s).powi(2)) + (((s).asinh()).powi(2))).recip();
+    let __intermediate_result_15 = (s).asinh();
+
+    (((__intermediate_result_2).powi(-3))
+        + ((__intermediate_result_4)
+            * (((1.0000000000000000000_f64) + (-(__intermediate_result_4))).recip()))
+        + ((((__intermediate_result_11) * (__intermediate_result_15))
+            + (-((s)
+                * (((1.0000000000000000000_f64) + ((s).powi(2)))
+                    .powf(-0.50000000000000000000_f64))
+                * (__intermediate_result_11))))
+            * ((s).acosh()))
+        + ((s)
+            * ((__intermediate_result_2).powi(-4))
+            * ((-3.0000000000000000000_f64)
+                + ((3.0000000000000000000_f64) * ((__intermediate_result_2).powi(2)))))
+        + ((((1.0000000000000000000_f64) + (s)).powf(-0.50000000000000000000_f64))
+            * (((-1.0000000000000000000_f64) + (s)).powf(-0.50000000000000000000_f64))
+            * ((s).atan2((__intermediate_result_15)))))
+}
+
+/*
+
+* Code generated by Symars. Thank you for using Symars!
+  Symars is licensed under MIT licnese.
+  Repository: https://github.com/Da1sypetals/Symars
+
+* Computation code is not intended for manual editing.
+
+* If you find an error,
+  or if you believe Symars generates incorrect result,
+  please raise an issue under our repo with minimal reproducible example.
+
+*/
+
+#[inline]
+pub fn hess_kappa(s: f64) -> f64 {
+    let __intermediate_result_7 = (((s).powi(2)) + (((s).asinh()).powi(2))).recip();
+    let __intermediate_result_10 = (s).asinh();
+    let __intermediate_result_12 = (((s).powi(2)) + (((s).asinh()).powi(2))).powi(-2);
+    let __intermediate_result_13 = (((-2.0000000000000000000_f64) * (s))
+        + ((-2.0000000000000000000_f64)
+            * (((1.0000000000000000000_f64) + ((s).powi(2))).powf(-0.50000000000000000000_f64))
+            * ((s).asinh())));
+    let __intermediate_result_16 =
+        ((1.0000000000000000000_f64) + ((s).powi(2))).powf(-0.50000000000000000000_f64);
+    let __intermediate_result_22 = ((1.0000000000000000000_f64) + (-((s).powi(-2))));
+    let __intermediate_result_30 = (s).tanh();
+    let __intermediate_result_31 =
+        ((-3.0000000000000000000_f64) + ((3.0000000000000000000_f64) * (((s).tanh()).powi(2))));
+    let __intermediate_result_33 = ((s).tanh()).powi(2);
+    let __intermediate_result_35 =
+        ((1.0000000000000000000_f64) + (s)).powf(-0.50000000000000000000_f64);
+    let __intermediate_result_37 =
+        ((-1.0000000000000000000_f64) + (s)).powf(-0.50000000000000000000_f64);
+    let __intermediate_result_48 = (s).atan2((s).asinh());
+
+    ((((((s).powi(2))
+        * (((1.0000000000000000000_f64) + ((s).powi(2))).powf(-1.5000000000000000000_f64))
+        * (__intermediate_result_7))
+        + ((__intermediate_result_12) * (__intermediate_result_13) * (__intermediate_result_10))
+        + (-((s)
+            * (__intermediate_result_16)
+            * (__intermediate_result_12)
+            * (__intermediate_result_13))))
+        * ((s).acosh()))
+        + ((-2.0000000000000000000_f64) * ((s).powi(-5)) * ((__intermediate_result_22).powi(-2)))
+        + ((-2.0000000000000000000_f64) * ((s).powi(-3)) * ((__intermediate_result_22).recip()))
+        + ((2.0000000000000000000_f64)
+            * ((__intermediate_result_30).powi(-4))
+            * (__intermediate_result_31))
+        + ((2.0000000000000000000_f64)
+            * (__intermediate_result_35)
+            * (__intermediate_result_37)
+            * (((__intermediate_result_7) * (__intermediate_result_10))
+                + (-((s) * (__intermediate_result_16) * (__intermediate_result_7)))))
+        + ((3.0000000000000000000_f64)
+            * (s)
+            * ((__intermediate_result_30).powi(-3))
+            * ((2.0000000000000000000_f64)
+                + ((-2.0000000000000000000_f64) * (__intermediate_result_33))))
+        + ((-0.50000000000000000000_f64)
+            * (((1.0000000000000000000_f64) + (s)).powf(-1.5000000000000000000_f64))
+            * (__intermediate_result_37)
+            * (__intermediate_result_48))
+        + ((-0.50000000000000000000_f64)
+            * (__intermediate_result_35)
+            * (((-1.0000000000000000000_f64) + (s)).powf(-1.5000000000000000000_f64))
+            * (__intermediate_result_48))
+        + ((s)
+            * ((__intermediate_result_30).powi(-5))
+            * ((-4.0000000000000000000_f64)
+                + ((4.0000000000000000000_f64) * (__intermediate_result_33)))
+            * (__intermediate_result_31)))
+}
 
 #[inline]
 pub fn grad_0(s: f64) -> f64 {
