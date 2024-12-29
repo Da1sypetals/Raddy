@@ -62,6 +62,10 @@ fn lk_norm(&self, k: u32) -> Self::Scalar;
 fn linf_norm(&self) -> Self::Scalar;
 ```
 
+== `fn determinant(&self) -> Self::Scalar`
+- Supports determinants for $N<=6$.
+  - Too large $N$ may blow the stack.
+
 == Others
 - Feel free to call any methods that compiler is happy with, such as `apply()`.
 - If you encounter currently not implemented methods that you think should be implemented, please raise an issue at #link("https://github.com/Da1sypetals/Raddy/issues", "Raddy Link").
