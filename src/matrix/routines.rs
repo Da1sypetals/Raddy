@@ -1,9 +1,8 @@
-use crate::{
-    det::{det_4_4_lu, det_5_5, det_6_6_lu},
-    Ad,
-};
+use crate::Ad;
 use nalgebra::SMatrix;
 use num_traits::One;
+
+use super::det_impl::{det_4_4_lu, det_5_5_lu, det_6_6_lu};
 
 /// Self is matrix type; Scalar is scalar type.
 pub trait AdMatrixOps {
@@ -163,7 +162,7 @@ impl<const N: usize, const R: usize, const C: usize> AdMatrixOps for SMatrix<Ad<
                     let a23 = self.get_unchecked((4, 3)).clone();
                     let a24 = self.get_unchecked((4, 4)).clone();
 
-                    det_5_5(
+                    det_5_5_lu(
                         a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16,
                         a17, a18, a19, a20, a21, a22, a23, a24,
                     )

@@ -1,7 +1,7 @@
 #![allow(unused)]
 
 use crate::{
-    additional_ops::AdMatrixOps,
+    matrix::routines::AdMatrixOps,
     test::{
         symbolic::{grad_det, grad_det4, hess_det, hess_det4},
         EPS,
