@@ -1,11 +1,10 @@
 #![allow(unused)]
 
-use std::any::Any;
-
-use crate::{commutative::Commutative, norms::LkNorm, GetValue, Scalar};
+use crate::{commutative::Commutative, norms::AdMatrixOps, Ad, GetValue};
 use approx::assert_abs_diff_eq;
 use nalgebra::{Const, DimName, Matrix3, SMatrix, SVector, U3, U5};
 use rand::{thread_rng, Rng};
+use std::any::Any;
 
 const EPS: f64 = 1e-12;
 const RELRATIO: f64 = 6e-4;
@@ -290,26 +289,26 @@ pub fn grad_3(s: f64) -> f64 {
 #[test]
 fn test_scalar() {
     let sv = 2.4;
-    let s: Scalar<1> = Scalar::active_uni(2.4);
+    let s: Ad<1> = Ad::active_uni(2.4);
     let g = s.powi(3).grad()[(0, 0)];
     assert_abs_diff_eq!(g, 3.0 * sv * sv, epsilon = EPS);
 
     let sv = -3.42;
-    let s: Scalar<1> = Scalar::active_uni(sv);
+    let s: Ad<1> = Ad::active_uni(sv);
     let g = s.sin().mul(&s).grad()[(0, 0)];
     let h = s.sin().mul(&s).hess()[(0, 0)];
     assert_abs_diff_eq!(g, sv * sv.cos() + sv.sin(), epsilon = EPS);
     assert_abs_diff_eq!(h, 2.0 * sv.cos() - sv * sv.sin(), epsilon = EPS);
 
     let sv = -3.42;
-    let s: Scalar<1> = Scalar::active_uni(sv);
+    let s: Ad<1> = Ad::active_uni(sv);
     let g = s.sin().mul(&s).grad()[(0, 0)];
     let h = s.sin().mul(&s).hess()[(0, 0)];
     assert_abs_diff_eq!(g, sv * sv.cos() + sv.sin(), epsilon = EPS);
     assert_abs_diff_eq!(h, 2.0 * sv.cos() - sv * sv.sin(), epsilon = EPS);
 
     let sv = 1.4623;
-    let s: Scalar<1> = Scalar::active_uni(sv);
+    let s: Ad<1> = Ad::active_uni(sv);
     let expr = s
         .cosh()
         .mul(&s.sinh().mul(&1.245.div_var(&s.powi(-2))))
@@ -320,7 +319,7 @@ fn test_scalar() {
     assert_abs_diff_eq!(h, hess_0(sv), epsilon = EPS);
 
     let sv = 31.8;
-    let s: Scalar<1> = Scalar::active_uni(sv);
+    let s: Ad<1> = Ad::active_uni(sv);
     let expr = s
         .tan()
         .mul(&s.asinh())
@@ -335,7 +334,7 @@ fn test_scalar() {
     // ############################### relative criteria ###############################
 
     let sv = 0.2127;
-    let s: Scalar<1> = Scalar::active_uni(sv);
+    let s: Ad<1> = Ad::active_uni(sv);
     let expr = s
         .tan()
         .mul(&s.asinh().mul(&s.atanh()))
@@ -351,7 +350,7 @@ fn test_scalar() {
     float_close(h, hess_2(sv));
 
     let sv = 0.8235;
-    let s: Scalar<1> = Scalar::active_uni(sv);
+    let s: Ad<1> = Ad::active_uni(sv);
     let expr = s
         .tan()
         .mul(&s.asinh().square())
@@ -378,7 +377,7 @@ fn test_norm_1() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Scalar<N_TEST_MAT_1>, N_TEST_MAT_1> = Scalar::active_from_slice(vals);
+    let s: SVector<Ad<N_TEST_MAT_1>, N_TEST_MAT_1> = Ad::active_from_slice(vals);
     let z = s.l2_norm();
     // core logic ends ####################################################
 
@@ -390,7 +389,7 @@ fn test_norm_1() {
     );
 
     // Check if the gradients are close enough to the expected values
-    let g_diff = (expected_grad - z.grad).norm_squared();
+    let g_diff = (expected_grad - z.grad()).norm_squared();
     assert_abs_diff_eq!(g_diff, 0.0, epsilon = EPS);
 
     let h = z.hess;
@@ -416,14 +415,14 @@ fn test_norm_2() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Scalar<N_VEC_2>, N_VEC_2> = Scalar::active_from_slice(vals);
+    let s: SVector<Ad<N_VEC_2>, N_VEC_2> = Ad::active_from_slice(vals);
     let z = s.clone().reshape_generic(NaConst {}, NaConst {});
     let tr = (z.transpose() * z).trace();
     // core logic ends ####################################################
 
-    // dbg!(&tr.grad);
-    let expected_grad = Scalar::inactive_value(2.0) * &s;
-    let g_diff = (expected_grad.value() - tr.grad).norm_squared();
+    // dbg!(&tr.grad());
+    let expected_grad = s.scale(2.0);
+    let g_diff = (expected_grad.value() - tr.grad()).norm_squared();
     assert_abs_diff_eq!(g_diff, 0.0, epsilon = EPS);
 
     assert_eq!(tr.hess, SMatrix::<f64, 9, 9>::identity() * 2.0);

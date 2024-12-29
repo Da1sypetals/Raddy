@@ -9,8 +9,8 @@ pub mod commutative;
 pub mod compare;
 /// Please Note that all `unimplemented!` methods are not intended for use.
 /// If any operation encountered these, please raise an issue.
-pub mod nalgebra_scalar;
 pub mod norms;
+pub mod scalar;
 pub mod scalar_matrix_mul;
 #[cfg(test)]
 mod test;
@@ -20,13 +20,13 @@ pub mod types;
 // ################################### Data Structure ###################################
 
 #[derive(Debug, Clone)]
-pub struct Scalar<const N: usize> {
+pub struct Ad<const N: usize> {
     pub(crate) value: f64,
     pub(crate) grad: vec<N>,
     pub(crate) hess: mat<N>,
 }
 
-impl<const N: usize> Scalar<N> {
+impl<const N: usize> Ad<N> {
     /// Makes all-zeroed Scalar. Only used internally.
 
     pub fn value(&self) -> f64 {
@@ -48,7 +48,7 @@ pub trait GetValue<const R: usize, const C: usize> {
     fn value(&self) -> Self::Value;
 }
 
-impl<const N: usize, const R: usize, const C: usize> GetValue<R, C> for SMatrix<Scalar<N>, R, C> {
+impl<const N: usize, const R: usize, const C: usize> GetValue<R, C> for SMatrix<Ad<N>, R, C> {
     type Value = SMatrix<f64, R, C>;
     fn value(&self) -> Self::Value {
         let mut val = Self::Value::zeros();
@@ -63,7 +63,7 @@ impl<const N: usize, const R: usize, const C: usize> GetValue<R, C> for SMatrix<
 
 // ################################### Constructors ###################################
 
-impl Scalar<1> {
+impl Ad<1> {
     pub fn given_values(value: f64, grad: f64, hess: f64) -> Self {
         Self {
             value,
@@ -82,13 +82,32 @@ impl Scalar<1> {
     }
 }
 
-impl<const N: usize> Scalar<N> {
+impl<const N: usize> Ad<N> {
     pub fn inactive_value(value: f64) -> Self {
         let mut res = Self::_zeroed();
-
         res.value = value;
-
         res
+    }
+
+    pub fn inactive_vector(values: &SVector<f64, N>) -> SVector<Self, N> {
+        let mut scalars = Vec::new();
+        for i in 0..N {
+            let scalar = Self::inactive_value(values[i]);
+            scalars.push(scalar);
+        }
+
+        SVector::from_column_slice(&scalars)
+    }
+
+    pub fn inactive_from_slice(values: &[f64]) -> SVector<Self, N> {
+        assert_eq!(
+            values.len(),
+            N,
+            "Slice length mismatch: expected {}, got {}",
+            N,
+            values.len()
+        );
+        Self::inactive_vector(&SVector::from_column_slice(values))
     }
 
     pub fn given(value: f64, grad: &vec<N>, hess: &mat<N>) -> Self {
@@ -123,7 +142,7 @@ impl<const N: usize> Scalar<N> {
 
 // ################################### Private Constructors ###################################
 
-impl<const N: usize> Scalar<N> {
+impl<const N: usize> Ad<N> {
     fn _active_scalar_with_index(value: f64, index: usize) -> Self {
         let mut res = Self::_zeroed();
 
@@ -144,7 +163,7 @@ impl<const N: usize> Scalar<N> {
 
 // ################################### Utils ###################################
 
-impl<const N: usize> Scalar<N> {
+impl<const N: usize> Ad<N> {
     fn chain(
         value: f64, // f
         d: f64,     // df/da
@@ -163,7 +182,7 @@ impl<const N: usize> Scalar<N> {
 
 // ################################### Unary Operators ###################################
 
-impl<const N: usize> Scalar<N> {
+impl<const N: usize> Ad<N> {
     pub fn neg(&self) -> Self {
         let mut res = Self::_zeroed();
         res.value = -self.value;
@@ -403,7 +422,7 @@ impl<const N: usize> Scalar<N> {
 }
 
 // ################################### Binary Operators ###################################
-impl<const N: usize> Scalar<N> {
+impl<const N: usize> Ad<N> {
     pub fn add(&self, other: &Self) -> Self {
         let mut res = Self::_zeroed();
         res.value = self.value + other.value;

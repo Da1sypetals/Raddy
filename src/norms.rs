@@ -1,22 +1,27 @@
+use crate::Ad;
 use nalgebra::SMatrix;
 
-use crate::Scalar;
-
-pub trait LkNorm {
+/// Self is matrix type; Scalar is scalar type.
+pub trait AdMatrixOps {
     type Scalar;
+
+    // Norms
     fn l1_norm(&self) -> Self::Scalar;
     fn l2_norm(&self) -> Self::Scalar;
     fn l2_norm_squared(&self) -> Self::Scalar;
     fn lk_norm(&self, k: u32) -> Self::Scalar;
     fn linf_norm(&self) -> Self::Scalar;
+
+    // Operator extensions
+    fn scale(&self, factor: f64) -> Self;
 }
 
-impl<const N: usize, const R: usize, const C: usize> LkNorm for SMatrix<Scalar<N>, R, C> {
-    type Scalar = Scalar<N>;
+impl<const N: usize, const R: usize, const C: usize> AdMatrixOps for SMatrix<Ad<N>, R, C> {
+    type Scalar = Ad<N>;
 
     /// Sum of absolute of all components
     fn l1_norm(&self) -> Self::Scalar {
-        let mut res = Scalar::_zeroed();
+        let mut res = Ad::_zeroed();
         for r in 0..R {
             for c in 0..C {
                 res += self[(r, c)].abs().clone();
@@ -27,7 +32,7 @@ impl<const N: usize, const R: usize, const C: usize> LkNorm for SMatrix<Scalar<N
 
     /// Pythagoras theorem
     fn l2_norm(&self) -> Self::Scalar {
-        let mut res = Scalar::_zeroed();
+        let mut res = Ad::_zeroed();
         for r in 0..R {
             for c in 0..C {
                 res += self[(r, c)].square();
@@ -37,7 +42,7 @@ impl<const N: usize, const R: usize, const C: usize> LkNorm for SMatrix<Scalar<N
     }
 
     fn l2_norm_squared(&self) -> Self::Scalar {
-        let mut res = Scalar::_zeroed();
+        let mut res = Ad::_zeroed();
         for r in 0..R {
             for c in 0..C {
                 res += self[(r, c)].square();
@@ -47,7 +52,7 @@ impl<const N: usize, const R: usize, const C: usize> LkNorm for SMatrix<Scalar<N
     }
 
     fn lk_norm(&self, k: u32) -> Self::Scalar {
-        let mut res = Scalar::_zeroed();
+        let mut res = Ad::_zeroed();
         for r in 0..R {
             for c in 0..C {
                 res += self[(r, c)].powi(k as i32);
@@ -64,5 +69,9 @@ impl<const N: usize, const R: usize, const C: usize> LkNorm for SMatrix<Scalar<N
             }
         }
         res
+    }
+
+    fn scale(&self, factor: f64) -> Self {
+        Ad::inactive_value(factor) * self
     }
 }

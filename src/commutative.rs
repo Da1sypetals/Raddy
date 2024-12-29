@@ -1,4 +1,4 @@
-use crate::Scalar;
+use crate::Ad;
 
 pub trait Commutative<const N: usize> {
     type Var;
@@ -6,7 +6,7 @@ pub trait Commutative<const N: usize> {
 }
 
 impl<const N: usize> Commutative<N> for f64 {
-    type Var = Scalar<N>;
+    type Var = Ad<N>;
     fn div_var(&self, var: &Self::Var) -> Self::Var {
         if var.value.abs() == 0.0 {
             // We don't want to mute this behavior or get NaN as this is fucking undebuggable.
