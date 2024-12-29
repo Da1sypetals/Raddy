@@ -1,8 +1,10 @@
 #![allow(unused)]
 
+use std::any::Any;
+
 use crate::{commutative::Commutative, norms::LkNorm, Variable};
 use approx::assert_abs_diff_eq;
-use nalgebra::{SMatrix, SVector};
+use nalgebra::{Const, DimName, SMatrix, SVector, U3, U5};
 use rand::{thread_rng, Rng};
 
 const EPS: f64 = 1e-12;
@@ -366,7 +368,7 @@ fn test_scalar() {
 }
 
 #[test]
-fn test_matrix() {
+fn test_norm_1() {
     const N_TEST_MAT_1: usize = 30;
 
     let mut rng = thread_rng();
@@ -375,16 +377,11 @@ fn test_matrix() {
         .map(|_| rng.gen_range(-4.0..4.0))
         .collect::<Vec<_>>();
 
-    // Create a 4-dimensional active vector from the slice
+    // core logic #########################################################
     let s: SVector<Variable<N_TEST_MAT_1>, N_TEST_MAT_1> = Variable::active_from_slice(vals);
-
-    // Compute the L2 norm of the vector
     let z = s.l2_norm();
-
-    // Trigger computation of gradients by calling `grad` on z
-
-    // Debug print the gradients of each component of s
     dbg!(&z.grad);
+    // core logic ends ####################################################
 
     // Here's how we might compute the expected gradient for L2 norm:
     // The gradient of the L2 norm with respect to x_i is x_i / ||x||
@@ -395,7 +392,39 @@ fn test_matrix() {
     // Using an approximate comparison since floating-point arithmetic isn't exact
     for (i, (computed, &expected)) in z.grad.iter().zip(expected_grad.iter()).enumerate() {
         assert!(
-            (computed - expected).abs() < 1e-6,
+            (computed - expected).abs() < EPS,
+            "Mismatch at index {}: computed = {}, expected = {}",
+            i,
+            computed,
+            expected
+        );
+    }
+}
+
+#[test]
+fn test_norm_2() {
+    const N_TEST_MAT_2: usize = 3;
+    type NaConst = Const<N_TEST_MAT_2>;
+    const N_VEC_2: usize = N_TEST_MAT_2 * N_TEST_MAT_2;
+
+    let mut rng = thread_rng();
+    // let vals = &[1.2, -4.2, 2.4, 0.4];
+    let vals: &[f64] = &(0..N_VEC_2)
+        .map(|_| rng.gen_range(-4.0..4.0))
+        .collect::<Vec<_>>();
+
+    // core logic #########################################################
+    let s: SVector<Variable<N_VEC_2>, N_VEC_2> = Variable::active_from_slice(vals);
+    let z = s.clone().reshape_generic(NaConst {}, NaConst {});
+    let tr = (z.transpose() * z).trace();
+    // core logic ends ####################################################
+
+    dbg!(&tr.grad);
+    for (i, computed) in tr.grad.iter().enumerate() {
+        // trace of frob norm is 2x
+        let expected = 2.0 * s[i].value();
+        assert!(
+            (computed - expected).abs() < EPS,
             "Mismatch at index {}: computed = {}, expected = {}",
             i,
             computed,

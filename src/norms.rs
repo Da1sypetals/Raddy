@@ -1,4 +1,4 @@
-use nalgebra::SVector;
+use nalgebra::SMatrix;
 
 use crate::Variable;
 
@@ -11,45 +11,55 @@ pub trait LkNorm {
     fn linf_norm(&self) -> Self::Scalar;
 }
 
-impl<const N: usize> LkNorm for SVector<Variable<N>, N> {
+impl<const N: usize, const R: usize, const C: usize> LkNorm for SMatrix<Variable<N>, R, C> {
     type Scalar = Variable<N>;
 
     fn l1_norm(&self) -> Self::Scalar {
         let mut res = Variable::_zeroed();
-        for i in 0..N {
-            res += self[i].clone();
+        for r in 0..R {
+            for c in 0..C {
+                res += self[(r, c)].abs().clone();
+            }
         }
         res
     }
 
     fn l2_norm(&self) -> Self::Scalar {
         let mut res = Variable::_zeroed();
-        for i in 0..N {
-            res += self[i].square();
+        for r in 0..R {
+            for c in 0..C {
+                res += self[(r, c)].square();
+            }
         }
         res.sqrt()
     }
 
     fn l2_norm_squared(&self) -> Self::Scalar {
         let mut res = Variable::_zeroed();
-        for i in 0..N {
-            res += self[i].square();
+        for r in 0..R {
+            for c in 0..C {
+                res += self[(r, c)].square();
+            }
         }
         res
     }
 
     fn lk_norm(&self, k: u32) -> Self::Scalar {
         let mut res = Variable::_zeroed();
-        for i in 0..N {
-            res += self[i].powi(k as i32);
+        for r in 0..R {
+            for c in 0..C {
+                res += self[(r, c)].powi(k as i32);
+            }
         }
         res.powf(1.0 / (k as f64))
     }
 
     fn linf_norm(&self) -> Self::Scalar {
         let mut res = self[0].clone();
-        for i in 1..N {
-            res = res.max(&self[i].clone());
+        for r in 0..R {
+            for c in 0..C {
+                res = res.max(&self[(r, c)].clone());
+            }
         }
         res
     }

@@ -11,6 +11,7 @@ Trying to port some portion of [TinyAD](https://github.com/patr-schm/TinyAD) to 
   - [x] Gradient
   - [x] Hessian
   - [ ] Tests
+- [ ] An option to allocate hessian on heap
 
 # TODO
 1. Figure out how to implement custom scalar type in `nalgebra`.
