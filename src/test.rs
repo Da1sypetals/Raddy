@@ -3,6 +3,7 @@
 use crate::{commutative::Commutative, norms::LkNorm, Variable};
 use approx::assert_abs_diff_eq;
 use nalgebra::{SMatrix, SVector};
+use rand::{thread_rng, Rng};
 
 const EPS: f64 = 1e-12;
 const RELRATIO: f64 = 6e-4;
@@ -366,10 +367,16 @@ fn test_scalar() {
 
 #[test]
 fn test_matrix() {
-    let vals = &[1.2, -4.2, 2.4, 0.4];
+    const N_TEST_MAT_1: usize = 30;
+
+    let mut rng = thread_rng();
+    // let vals = &[1.2, -4.2, 2.4, 0.4];
+    let vals: &[f64] = &(0..N_TEST_MAT_1)
+        .map(|_| rng.gen_range(-4.0..4.0))
+        .collect::<Vec<_>>();
 
     // Create a 4-dimensional active vector from the slice
-    let s: SVector<Variable<4>, 4> = Variable::active_from_slice(vals);
+    let s: SVector<Variable<N_TEST_MAT_1>, N_TEST_MAT_1> = Variable::active_from_slice(vals);
 
     // Compute the L2 norm of the vector
     let z = s.l2_norm();
