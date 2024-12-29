@@ -12,6 +12,8 @@
 
 */
 
+#![allow(unused)]
+
 #[inline]
 pub fn grad_0(s: f64) -> f64 {
     let __intermediate_result_5 = (s).powi(2);

@@ -1,4 +1,5 @@
 #![allow(unused)]
+// For test use. Not functional code.
 
 use nalgebra::{Matrix3, SMatrix};
 use num_traits::{Num, One, Signed, Zero};

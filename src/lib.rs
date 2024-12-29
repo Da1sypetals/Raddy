@@ -5,7 +5,6 @@ pub mod compare;
 /// If any operation encountered these, please raise an issue.
 pub mod norms;
 pub mod scalar;
-pub mod scalar_matrix_mul;
 #[cfg(test)]
 mod test;
 pub mod testscalar;

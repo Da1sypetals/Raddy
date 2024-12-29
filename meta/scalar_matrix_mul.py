@@ -35,5 +35,5 @@ use std::ops::Mul;
     res += scalar_matrix_mul_template(scalar_ref=True, matrix_ref=False)
     res += scalar_matrix_mul_template(scalar_ref=False, matrix_ref=True)
     res += scalar_matrix_mul_template(scalar_ref=True, matrix_ref=True)
-    with open("src/scalar_matrix_mul.rs", "w") as sf:
+    with open("src/scalar/scalar_matrix_mul.rs", "w") as sf:
         sf.write(res)
