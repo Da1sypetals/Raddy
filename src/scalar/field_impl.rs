@@ -326,7 +326,7 @@ impl<const N: usize> ComplexField for Ad<N> {
     }
 
     fn recip(self) -> Self {
-        1_f64.div_var(&self)
+        1_f64.div_ad(&self)
     }
 
     /// Real number has itself as conjugate

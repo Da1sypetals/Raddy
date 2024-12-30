@@ -55,7 +55,7 @@ fn test_scalar1() {
     let s: Ad<1> = Ad::active_scalar(sv);
     let expr = s
         .cosh()
-        .mul(&s.sinh().mul(&1.245.div_var(&s.powi(-2))))
+        .mul(&s.sinh().mul(&1.245.div_ad(&s.powi(-2))))
         .add(&s.tanh());
     let g = expr.grad()[(0, 0)];
     assert_abs_diff_eq!(g, grad_0(sv), epsilon = EPS);
@@ -162,7 +162,7 @@ fn test_relative() {
         .sub(&s.powf(1.3).mul(&s.cos()))
         .add(&s.sqrt())
         .sub(&s.div_value(1.441).add(&s.recip()))
-        .sub(&(-6.235).div_var(&s));
+        .sub(&(-6.235).div_ad(&s));
 
     let g = expr.grad()[(0, 0)];
     float_close(g, grad_2(sv));
@@ -178,7 +178,7 @@ fn test_relative() {
         .sub(&s.powf(1.3).mul(&s.cos()))
         .add(&s.sqrt())
         .sub(&s.div_value(1.441).add(&s.recip()))
-        .sub(&(-6.235).div_var(&s).add(&s.powi(3).sinh()))
+        .sub(&(-6.235).div_ad(&s).add(&s.powi(3).sinh()))
         .add(&(s.powf(-1.24).div(&s.div_value(12.4).abs())))
         .abs();
 
