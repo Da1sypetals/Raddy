@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use super::commutative::Commutative;
 use crate::Ad;
 use approx::{AbsDiffEq, RelativeEq, UlpsEq};
