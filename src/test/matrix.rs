@@ -1,9 +1,8 @@
 #![allow(unused)]
 
 use crate::{
-    matrix::routines::AdMatrixOps,
     test::{
-        symbolic::{grad_det, grad_det4, hess_det, hess_det4},
+        symbolic::{grad_det3, grad_det4, hess_det, hess_det4},
         EPS,
     },
     Ad, GetValue,
@@ -24,7 +23,7 @@ fn test_norm_1() {
 
     // core logic #########################################################
     let s: SVector<Ad<N_TEST_MAT_1>, N_TEST_MAT_1> = Ad::active_from_slice(vals);
-    let z = s.l2_norm();
+    let z = s.norm();
     // core logic ends ####################################################
 
     // Here's how we might compute the expected gradient for L2 norm:
@@ -67,7 +66,7 @@ fn test_norm_2() {
     // core logic ends ####################################################
 
     // dbg!(&tr.grad());
-    let expected_grad = s.scale(2.0);
+    let expected_grad = s.scale(Ad::inactive_scalar(2.0));
     let g_diff = (expected_grad.value() - tr.grad()).norm_squared();
     assert_abs_diff_eq!(g_diff, 0.0, epsilon = EPS);
 
@@ -98,7 +97,7 @@ fn test_det3() {
     // core logic ends ####################################################
 
     // dbg!(&tr.grad());
-    let expected_grad = grad_det(
+    let expected_grad = grad_det3(
         vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8],
     );
     let g_diff = (expected_grad - det.grad()).norm_squared();
