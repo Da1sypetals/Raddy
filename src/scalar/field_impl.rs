@@ -590,7 +590,7 @@ impl<const N: usize> ComplexField for Ad<N> {
 
 #[cfg(test)]
 mod test_field_impl {
-    use crate::{test::symbolic::grad_det3, Ad, GetValue};
+    use crate::{symbolic::grad_det3, types::advec, Ad, GetValue};
     use approx::assert_abs_diff_eq;
     use na::U3;
     use rand::{thread_rng, Rng};
@@ -603,7 +603,7 @@ mod test_field_impl {
         const NVEC: usize = N * N;
         let mut rng = thread_rng();
         let vals: Vec<_> = (0..NVEC).map(|_| rng.gen_range(-3.0..3.0)).collect();
-        let matvec = Ad::<NVEC>::active_from_slice(&vals);
+        let matvec: advec<9, 9> = Ad::vec(&vals);
 
         // Note that this reshape is ROW MAJOR, we shall transpose it
         let mat: na::SMatrix<Ad<NVEC>, 3, 3> = matvec.reshape_generic(U3, U3).transpose();

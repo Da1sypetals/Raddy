@@ -1,10 +1,8 @@
 #![allow(unused)]
 
 use crate::{
-    test::{
-        symbolic::{grad_det3, grad_det4, hess_det, hess_det4},
-        EPS,
-    },
+    symbolic::{grad_det3, grad_det4, hess_det3, hess_det4},
+    test::EPS,
     Ad, GetValue,
 };
 use approx::assert_abs_diff_eq;
@@ -22,7 +20,7 @@ fn test_norm_1() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_TEST_MAT_1>, N_TEST_MAT_1> = Ad::active_from_slice(vals);
+    let s: SVector<Ad<N_TEST_MAT_1>, N_TEST_MAT_1> = Ad::vec(vals);
     let z = s.norm();
     // core logic ends ####################################################
 
@@ -60,7 +58,7 @@ fn test_norm_2() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_VEC_2>, N_VEC_2> = Ad::active_from_slice(vals);
+    let s: SVector<Ad<N_VEC_2>, N_VEC_2> = Ad::vec(vals);
     let z = s.clone().reshape_generic(NaConst {}, NaConst {});
     let tr = (z.transpose() * z).trace();
     // core logic ends ####################################################
@@ -86,7 +84,7 @@ fn test_det3() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_VEC_3>, N_VEC_3> = Ad::active_from_slice(vals);
+    let s: SVector<Ad<N_VEC_3>, N_VEC_3> = Ad::vec(vals);
     let z = s
         .clone()
         // This reshape is COL MAJOR!!!!!!!!!!!!!
@@ -103,7 +101,7 @@ fn test_det3() {
     let g_diff = (expected_grad - det.grad()).norm_squared();
     assert_abs_diff_eq!(g_diff, 0.0, epsilon = EPS);
 
-    let expected_hess = hess_det(
+    let expected_hess = hess_det3(
         vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8],
     );
     assert_eq!(det.hess, expected_hess);
@@ -122,7 +120,7 @@ fn test_det4() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_VEC_4>, N_VEC_4> = Ad::active_from_slice(vals);
+    let s: SVector<Ad<N_VEC_4>, N_VEC_4> = Ad::vec(vals);
     let z = s
         .clone()
         // This reshape is COL MAJOR!!!!!!!!!!!!!

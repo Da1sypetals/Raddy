@@ -1876,7 +1876,7 @@ pub const fn hess_det_8_8(
     0_f64
 }
 
-pub fn hess_det(
+pub fn hess_det3(
     a0: f64,
     a1: f64,
     a2: f64,

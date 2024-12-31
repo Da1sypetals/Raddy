@@ -1,6 +1,9 @@
 # Raddy
 Trying to port some portion of [TinyAD](https://github.com/patr-schm/TinyAD) to Rust.
 
+# Usage
+Please see `src/main.rs`.
+
 # Progress
 
 - [x] Univariate
@@ -18,11 +21,6 @@ Trying to port some portion of [TinyAD](https://github.com/patr-schm/TinyAD) to 
 - [ ] `f64` & `Scalar` Interop (How to? Seems sort of impossible due to [orphan rule](https://doc.rust-lang.org/book/ch10-02-traits.html)) (We use the same sort of workaround as `faer`)
 
 ## Untested
-
-### Univariate
-- [ ] `f64.pow(Ad)`
-- [ ] `f64.pow(Ad)`
-- [ ] `f64.pow(Ad)`
 
 ## Required implementations:
 - Norm:

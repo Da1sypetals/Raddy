@@ -31,44 +31,25 @@
 #set heading(numbering: "1.")
 
 = Constructors
+== `pub fn ad(value: f64) -> Ad<1>`
+- Initializes a differentiated scalar.
 
-== `Ad<1>` (One dimensional)
-+ `pub fn active_scalar(value: f64) -> Self `
-+ `pub fn given_scalar(value: f64, grad: f64, hess: f64) -> Self`
+== `pub fn vec<const L: usize>(values: &[f64]) -> SVector<Ad<L>, L>`
+- Initializes a differentiated vector.
+- _Panics_ if size mismatch.
 
-== `Ad<N>` 
-- Note that `SVector<T, N>` is `nalgebra` static column vector type that holds `N` elements.
-+ `pub fn inactive_scalar(value: f64) -> Self`
-+ `pub fn inactive_vector(values: &SVector<f64, N>) -> SVector<Self, N> `
-+ `pub fn inactive_from_slice(values: &[f64]) -> SVector<Self, N>`
-+ `pub fn given_vector(value: f64, grad: &vec<N>, hess: &mat<N>) -> Self `
-+ `pub fn active_vector(values: &SVector<f64, N>) -> SVector<Self, N>`
-+ `pub fn active_from_slice(values: &[f64]) -> SVector<Self, N>`
+== `pub fn val(value: f64) -> Ad<1>`
+- Initializes a constant scalar.
 
 
-= Methods
-== `fn scale(&self, factor: f64) -> Self`
-- Scale to a factor.
+== `pub fn valvec<const L: usize>(values: &[f64]) -> SVector<Ad<L>, L>`
+- Initializes a constant vector.
+- _Panics_ if size mismatch.
 
-== Norms 
-- Does not support `nalgebra` norms;
-- Methods are listed as follows:
-```rust
-type Scalar = Ad<N>;
-fn l1_norm(&self) -> Self::Scalar;
-fn l2_norm(&self) -> Self::Scalar;
-fn l2_norm_squared(&self) -> Self::Scalar;
-fn lk_norm(&self, k: u32) -> Self::Scalar;
-fn linf_norm(&self) -> Self::Scalar;
-```
 
-== `fn determinant(&self) -> Self::Scalar`
-- Supports determinants for $N<=6$.
-  - Too large $N$ may blow the stack.
+= Supports
+- Elementary function ($sin, cosh, exp, ln, $ _etc_.)
+  - Does *not* support $"atan"$, please use $"atan2"$ instead.
 
-== Others
-- Feel free to call any methods that compiler is happy with, such as `apply()`.
-- If you encounter currently not implemented methods that you think should be implemented, please raise an issue at #link("https://github.com/Da1sypetals/Raddy/issues", "Raddy Link").
-
-= Usage
-- Please refer to `src/test` for examples.
+- Norms and determinant for matrices.
+- SVD, although you should not use it (for some numerical problems).
