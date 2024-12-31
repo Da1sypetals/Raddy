@@ -1,7 +1,7 @@
 #![allow(unused)]
 
 use crate::{
-    symbolic::{grad_det3, grad_det4, hess_det3, hess_det4},
+    misc::symbolic::{grad_det3, grad_det4, hess_det3, hess_det4},
     test::EPS,
     Ad, GetValue,
 };

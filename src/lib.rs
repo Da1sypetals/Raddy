@@ -3,13 +3,12 @@ extern crate nalgebra as na;
 pub mod compare;
 pub mod ctor;
 pub mod matrix;
+pub mod misc;
 /// Please Note that all `unimplemented!` methods are not intended for use.
 /// If any operation encountered these, please raise an issue.
 pub mod scalar;
-pub mod symbolic;
 #[cfg(test)]
 mod test;
-pub mod testscalar;
 pub mod types;
 
 // ######################################################################################

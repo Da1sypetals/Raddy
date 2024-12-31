@@ -52,4 +52,5 @@
   - Does *not* support $"atan"$, please use $"atan2"$ instead.
 
 - Norms and determinant for matrices.
+- Matrix multiplication.
 - SVD, although you should not use it (for some numerical problems).
