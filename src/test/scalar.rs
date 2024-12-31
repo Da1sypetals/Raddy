@@ -1,7 +1,6 @@
 #![allow(unused)]
 
 use crate::{
-    scalar::commutative::Commutative,
     test::{
         symbolic::{
             grad_0, grad_1, grad_2, grad_3, grad_alpha, grad_beta, grad_costan, grad_kappa, hess_0,
@@ -55,7 +54,7 @@ fn test_scalar1() {
     let s: Ad<1> = Ad::active_scalar(sv);
     let expr = s
         .cosh()
-        .mul(&s.sinh().mul(&1.245.div_ad(&s.powi(-2))))
+        .mul(&s.sinh().mul(&(Ad::inactive_scalar(1.245) / s.powi(-2))))
         .add(&s.tanh());
     let g = expr.grad()[(0, 0)];
     assert_abs_diff_eq!(g, grad_0(sv), epsilon = EPS);
@@ -162,7 +161,7 @@ fn test_relative() {
         .sub(&s.powf(1.3).mul(&s.cos()))
         .add(&s.sqrt())
         .sub(&s.div_value(1.441).add(&s.recip()))
-        .sub(&(-6.235).div_ad(&s));
+        .sub(&(Ad::inactive_scalar(-6.235) / s));
 
     let g = expr.grad()[(0, 0)];
     float_close(g, grad_2(sv));
@@ -178,7 +177,7 @@ fn test_relative() {
         .sub(&s.powf(1.3).mul(&s.cos()))
         .add(&s.sqrt())
         .sub(&s.div_value(1.441).add(&s.recip()))
-        .sub(&(-6.235).div_ad(&s).add(&s.powi(3).sinh()))
+        .sub(&(Ad::inactive_scalar(-6.235) / s.clone()).add(&s.powi(3).sinh()))
         .add(&(s.powf(-1.24).div(&s.div_value(12.4).abs())))
         .abs();
 

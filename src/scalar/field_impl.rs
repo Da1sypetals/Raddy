@@ -1,6 +1,5 @@
 #![allow(unused)]
 
-use super::commutative::Commutative;
 use crate::Ad;
 use approx::{AbsDiffEq, RelativeEq, UlpsEq};
 use na::{ComplexField, Field, RealField, SimdValue};
@@ -328,7 +327,7 @@ impl<const N: usize> ComplexField for Ad<N> {
     }
 
     fn recip(self) -> Self {
-        1_f64.div_ad(&self)
+        Ad::inactive_scalar(1.0) / self
     }
 
     /// Real number has itself as conjugate

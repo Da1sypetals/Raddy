@@ -1,8 +1,5 @@
-use std::ops::{Add, Mul};
-
 use crate::Ad;
-
-use super::commutative::Commutative;
+use std::ops::{Add, Mul};
 
 // ################################### Unary Operators ###################################
 
@@ -284,7 +281,8 @@ impl<const N: usize> Ad<N> {
     }
 
     pub fn recip(&self) -> Self {
-        1_f64.div_ad(self)
+        // todo!("resolve codegen problem")
+        Ad::inactive_scalar(1.0) / self
     }
 
     pub fn div_value(&self, other: f64) -> Self {

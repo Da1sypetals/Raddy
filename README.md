@@ -15,7 +15,7 @@ Trying to port some portion of [TinyAD](https://github.com/patr-schm/TinyAD) to 
   - [x] Implement `ComplexField` for `&Ad<N>` (Not `Ad<N>`) (a huge task that may involve codegen/metaprogramming...)
   - [ ] Incrementally implement the trait in `ComplexField` if some methods need them
 - [ ] An option to allocate hessian on heap
-- [ ] `f64` & `Scalar` Interop (How to? Seems sort of impossible due to [orphan rule](https://doc.rust-lang.org/book/ch10-02-traits.html))
+- [ ] `f64` & `Scalar` Interop (How to? Seems sort of impossible due to [orphan rule](https://doc.rust-lang.org/book/ch10-02-traits.html)) (We use the same sort of workaround as `faer`)
 
 ## Untested
 

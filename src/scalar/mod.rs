@@ -1,4 +1,3 @@
-pub mod commutative;
 /// Implementations of operators on `Ad<N>`. Most are placeholders, to be implemented when needed.
 pub mod field_impl;
 pub mod num_traits_impl;
