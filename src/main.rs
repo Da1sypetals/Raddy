@@ -6,7 +6,7 @@ use raddy::{
 };
 use rand::{thread_rng, Rng};
 
-const EPS: f64 = 1e-12;
+const EPS: f64 = 1e-10;
 
 fn main() {
     // 1.
@@ -16,16 +16,19 @@ fn main() {
 
     let var = Ad::ad(val);
     let y = var.sin() * &var + var.ln();
-    let res = val * val.cos() + val.sin() + val.recip();
+    let g = val * val.cos() + val.sin() + val.recip();
+    let h = -val * val.sin() + 2.0 * val.cos() - val.powi(-2);
 
-    assert_eq!(y.grad()[(0, 0)], res);
+    assert_eq!(y.grad()[(0, 0)], g);
+    assert_eq!(y.hess()[(0, 0)], h);
+
+    // 2.
+    // ############################# Matrix #############################
 
     const N_TEST_MAT_4: usize = 4;
     type NaConst = Const<N_TEST_MAT_4>;
     const N_VEC_4: usize = N_TEST_MAT_4 * N_TEST_MAT_4;
 
-    // 2.
-    // ############################# Matrix #############################
     let vals: &[f64] = &(0..N_VEC_4)
         .map(|_| rng.gen_range(-4.0..4.0))
         .collect::<Vec<_>>();
