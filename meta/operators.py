@@ -232,5 +232,5 @@ use std::ops::{{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, RemAss
     res += rem_assign_unimpl(True)
     res += rem_assign_unimpl(False)
 
-    with open("src/scalar/operators_generated.rs", "w") as sf:
+    with open("src/scalar/operator_traits_impl.rs", "w") as sf:
         sf.write(res)

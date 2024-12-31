@@ -590,7 +590,7 @@ impl<const N: usize> ComplexField for Ad<N> {
 
 #[cfg(test)]
 mod test_field_impl {
-    use crate::{misc::symbolic::grad_det3, types::advec, Ad, GetValue};
+    use crate::{misc::symbolic_1::grad_det3, types::advec, Ad, GetValue};
     use approx::assert_abs_diff_eq;
     use na::U3;
     use rand::{thread_rng, Rng};

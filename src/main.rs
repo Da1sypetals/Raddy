@@ -1,7 +1,7 @@
 use approx::assert_abs_diff_eq;
 use nalgebra::{Const, SVector};
 use raddy::{
-    misc::symbolic::{grad_det4, hess_det4},
+    misc::symbolic_1::{grad_det4, hess_det4},
     Ad,
 };
 use rand::{thread_rng, Rng};

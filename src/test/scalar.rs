@@ -1,10 +1,10 @@
 #![allow(unused)]
 
-use crate::misc::symbolic::{
+use crate::misc::symbolic_1::{
     grad_0, grad_1, grad_2, grad_3, grad_alpha, grad_beta, grad_costan, grad_kappa, hess_0, hess_1,
     hess_2, hess_alpha, hess_beta, hess_costan, hess_kappa,
 };
-use crate::misc::symbolic_test_03::{grad_001, grad_002, grad_003, hess_001, hess_002, hess_003};
+use crate::misc::symbolic_2::{grad_001, grad_002, grad_003, hess_001, hess_002, hess_003};
 use crate::{
     test::{BIG_EPS, EPS, RELRATIO},
     Ad, GetValue,
