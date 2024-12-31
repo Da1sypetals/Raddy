@@ -557,7 +557,7 @@ impl<const N: usize> ComplexField for Ad<N> {
     }
 
     fn powc(self, n: Self) -> Self {
-        unimplemented!("Differentiation w.r.t. power it not supported");
+        unimplemented!("Differentiation w.r.t. complex power it not supported");
     }
 
     fn cbrt(self) -> Self {

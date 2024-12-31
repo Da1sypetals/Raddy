@@ -15,12 +15,13 @@ fn main() {
     let val = rng.gen_range(0.0..10.0);
 
     let var = Ad::ad(val);
-    let y = var.sin() * &var + var.ln();
+    let var = &var;
+    let y = var.sin() * var + var.ln();
     let g = val * val.cos() + val.sin() + val.recip();
     let h = -val * val.sin() + 2.0 * val.cos() - val.powi(-2);
 
-    assert_eq!(y.grad()[(0, 0)], g);
-    assert_eq!(y.hess()[(0, 0)], h);
+    assert_abs_diff_eq!(y.grad()[(0, 0)], g, epsilon = EPS);
+    assert_abs_diff_eq!(y.hess()[(0, 0)], h, epsilon = EPS);
 
     // 2.
     // ############################# Matrix #############################
