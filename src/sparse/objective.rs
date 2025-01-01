@@ -1,5 +1,4 @@
-use super::function::ObjectiveFunction;
-use crate::{make, types::advec};
+use crate::{make, types::advec, Ad};
 use faer::{
     sparse::{CreationError, SparseColMat},
     Col,
@@ -7,16 +6,6 @@ use faer::{
 use itertools::Itertools;
 
 /// N: problem size of a single objective.
-pub struct Objective<const N: usize, FuncType: ObjectiveFunction<N>> {
-    func: FuncType,
-}
-
-// operand_indices: Vec<[usize; N]>
-impl<const N: usize, FuncType: ObjectiveFunction<N>> Objective<N, FuncType> {
-    pub fn new(func: FuncType) -> Self {
-        Self { func }
-    }
-}
 
 pub struct ComputedObjective<const N: usize> {
     pub value: f64,
@@ -24,9 +13,11 @@ pub struct ComputedObjective<const N: usize> {
     pub hess_trips: Vec<(usize, usize, f64)>,
 }
 
-impl<const N: usize, FuncType: ObjectiveFunction<N>> Objective<N, FuncType> {
+pub trait Objective<const N: usize> {
+    fn eval(&self, variables: &advec<N, N>) -> Ad<N>;
+
     /// Compute value, grad, hess(triplets) in one go.
-    pub fn compute(&self, x: &Col<f64>, operand_indices: &[[usize; N]]) -> ComputedObjective<N> {
+    fn compute(&self, x: &Col<f64>, operand_indices: &[[usize; N]]) -> ComputedObjective<N> {
         let mut value = 0.0;
         let mut grad = Col::zeros(x.nrows());
         let mut hess_trips = Vec::new();
@@ -36,7 +27,7 @@ impl<const N: usize, FuncType: ObjectiveFunction<N>> Objective<N, FuncType> {
             let values = binding.as_slice();
             let vars: advec<N, N> = make::vec(values);
 
-            let obj = self.func.eval(&vars);
+            let obj = self.eval(&vars);
 
             let ind = ind.into_iter().enumerate();
 
@@ -59,7 +50,7 @@ impl<const N: usize, FuncType: ObjectiveFunction<N>> Objective<N, FuncType> {
         }
     }
 
-    pub fn value(&self, x: &Col<f64>, operand_indices: &[[usize; N]]) -> f64 {
+    fn value(&self, x: &Col<f64>, operand_indices: &[[usize; N]]) -> f64 {
         let mut res = 0.0;
 
         operand_indices.iter().for_each(|&ind| {
@@ -67,7 +58,7 @@ impl<const N: usize, FuncType: ObjectiveFunction<N>> Objective<N, FuncType> {
             let values = binding.as_slice();
             let vars: advec<N, N> = make::vec(values);
 
-            let obj = self.func.eval(&vars);
+            let obj = self.eval(&vars);
 
             res += obj.value();
         });
@@ -75,7 +66,7 @@ impl<const N: usize, FuncType: ObjectiveFunction<N>> Objective<N, FuncType> {
         res
     }
 
-    pub fn grad(&self, x: &Col<f64>, operand_indices: &[[usize; N]]) -> Col<f64> {
+    fn grad(&self, x: &Col<f64>, operand_indices: &[[usize; N]]) -> Col<f64> {
         let mut res = Col::zeros(x.nrows());
 
         operand_indices.iter().for_each(|&ind| {
@@ -83,7 +74,7 @@ impl<const N: usize, FuncType: ObjectiveFunction<N>> Objective<N, FuncType> {
             let values = binding.as_slice();
             let vars: advec<N, N> = make::vec(values);
 
-            let obj = self.func.eval(&vars);
+            let obj = self.eval(&vars);
 
             ind.into_iter()
                 .enumerate()
@@ -93,11 +84,7 @@ impl<const N: usize, FuncType: ObjectiveFunction<N>> Objective<N, FuncType> {
         res
     }
 
-    pub fn hess_trips(
-        &self,
-        x: &Col<f64>,
-        operand_indices: &[[usize; N]],
-    ) -> Vec<(usize, usize, f64)> {
+    fn hess_trips(&self, x: &Col<f64>, operand_indices: &[[usize; N]]) -> Vec<(usize, usize, f64)> {
         let mut trips = Vec::new();
 
         operand_indices.iter().for_each(|&ind| {
@@ -105,7 +92,7 @@ impl<const N: usize, FuncType: ObjectiveFunction<N>> Objective<N, FuncType> {
             let values = binding.as_slice();
             let vars: advec<N, N> = make::vec(values);
 
-            let obj = self.func.eval(&vars);
+            let obj = self.eval(&vars);
 
             let ind = ind.into_iter().enumerate();
 
@@ -119,7 +106,7 @@ impl<const N: usize, FuncType: ObjectiveFunction<N>> Objective<N, FuncType> {
         trips
     }
 
-    pub fn hess(
+    fn hess(
         &self,
         x: &Col<f64>,
         operand_indices: &[[usize; N]],

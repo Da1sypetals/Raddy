@@ -1,7 +1,7 @@
 use faer::{prelude::SpSolver, sparse::SparseColMat, Col};
 use raddy::{
     make,
-    sparse::{function::ObjectiveFunction, objective::Objective},
+    sparse::objective::Objective,
     types::{advec, vec},
 };
 
@@ -11,7 +11,7 @@ struct SpringEnergy {
 }
 
 // 2d * 2nodes = 4dof
-impl ObjectiveFunction<4> for SpringEnergy {
+impl Objective<4> for SpringEnergy {
     fn eval(&self, variables: &raddy::types::advec<4, 4>) -> raddy::Ad<4> {
         let p1 = advec::<4, 2>::new(variables[0].clone(), variables[1].clone());
         let p2 = advec::<4, 2>::new(variables[2].clone(), variables[3].clone());
@@ -30,10 +30,10 @@ fn main() {
     let springs = vec![[0, 1, 2, 3], [2, 3, 4, 5], [0, 1, 4, 5]];
     let x0 = faer::col::from_slice(&[0.0, 0.0, 2.0, 0.0, 1.0, 2.0]).to_owned();
 
-    let obj = Objective::new(SpringEnergy {
+    let obj = SpringEnergy {
         k: 10000.0,
         restlen: 1.0,
-    });
+    };
 
     let mut i = 0;
     let mut x = x0.clone();
