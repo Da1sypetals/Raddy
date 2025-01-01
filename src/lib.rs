@@ -7,6 +7,7 @@ pub mod misc;
 /// Please Note that all `unimplemented!` methods are not intended for use.
 /// If any operation encountered these, please raise an issue.
 pub mod scalar;
+pub mod sparse;
 #[cfg(test)]
 mod test;
 pub mod types;

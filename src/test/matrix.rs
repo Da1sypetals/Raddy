@@ -1,5 +1,6 @@
 #![allow(unused)]
 
+use crate::ctor;
 use crate::{
     misc::symbolic_1::{grad_det3, grad_det4, hess_det3, hess_det4},
     test::EPS,
@@ -20,7 +21,7 @@ fn test_norm_1() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_TEST_MAT_1>, N_TEST_MAT_1> = Ad::vec(vals);
+    let s: SVector<Ad<N_TEST_MAT_1>, N_TEST_MAT_1> = ctor::vec(vals);
     let z = s.norm();
     // core logic ends ####################################################
 
@@ -58,7 +59,7 @@ fn test_norm_2() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_VEC_2>, N_VEC_2> = Ad::vec(vals);
+    let s: SVector<Ad<N_VEC_2>, N_VEC_2> = ctor::vec(vals);
     let z = s.clone().reshape_generic(NaConst {}, NaConst {});
     let tr = (z.transpose() * z).trace();
     // core logic ends ####################################################
@@ -84,7 +85,7 @@ fn test_det3() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_VEC_3>, N_VEC_3> = Ad::vec(vals);
+    let s: SVector<Ad<N_VEC_3>, N_VEC_3> = ctor::vec(vals);
     let z = s
         .clone()
         // This reshape is COL MAJOR!!!!!!!!!!!!!
@@ -120,7 +121,7 @@ fn test_det4() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_VEC_4>, N_VEC_4> = Ad::vec(vals);
+    let s: SVector<Ad<N_VEC_4>, N_VEC_4> = ctor::vec(vals);
     let z = s
         .clone()
         // This reshape is COL MAJOR!!!!!!!!!!!!!
