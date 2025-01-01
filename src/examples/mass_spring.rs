@@ -1,11 +1,9 @@
 use faer::{prelude::SpSolver, sparse::SparseColMat, Col};
 use raddy::{
+    make,
     sparse::{function::ObjectiveFunction, objective::Objective},
     types::{advec, vec},
-    Ad,
 };
-
-const EPS: f64 = 1e-10;
 
 struct SpringEnergy {
     k: f64,
@@ -20,31 +18,29 @@ impl ObjectiveFunction<4> for SpringEnergy {
 
         let len = (p2 - p1).norm();
         // Hooke's law
-        let potential =
-            Ad::inactive_scalar(0.5 * self.k) * (len - Ad::inactive_scalar(self.restlen)).powi(2);
+        let potential = make::val(0.5 * self.k) * (len - make::val(self.restlen)).powi(2);
 
         potential
     }
 }
 
 fn main() {
+    // todo!("This example is undone");
+
     let springs = vec![[0, 1, 2, 3], [2, 3, 4, 5], [0, 1, 4, 5]];
     let x0 = faer::col::from_slice(&[0.0, 0.0, 2.0, 0.0, 1.0, 2.0]).to_owned();
 
-    let obj = Objective::new(
-        SpringEnergy {
-            k: 10000.0,
-            restlen: 1.0,
-        },
-        springs,
-    );
+    let obj = Objective::new(SpringEnergy {
+        k: 10000.0,
+        restlen: 1.0,
+    });
 
     let mut i = 0;
     let mut x = x0.clone();
     let mut dir: Col<f64>;
     while {
-        let grad = obj.grad(&x);
-        let mut hesstrip = obj.hess_trips(&x);
+        let grad = obj.grad(&x, &springs);
+        let mut hesstrip = obj.hess_trips(&x, &springs);
         // for i in 0..6 {
         //     hesstrip.push((i, i, 1.0));
         // }
@@ -71,5 +67,5 @@ fn main() {
         println!("Len 3 = {}", (p3 - p1).norm());
     }
 
-    println!("Current potential: {}", obj.value(&x));
+    println!("Current potential: {}", obj.value(&x, &springs));
 }

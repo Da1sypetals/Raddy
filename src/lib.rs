@@ -1,7 +1,7 @@
 extern crate nalgebra as na;
 
 pub mod compare;
-pub mod ctor;
+pub mod make;
 pub mod matrix;
 pub mod misc;
 /// Please Note that all `unimplemented!` methods are not intended for use.
@@ -92,7 +92,7 @@ impl<const N: usize> Ad<N> {
         res
     }
 
-    pub fn inactive_vector(values: &SVector<f64, N>) -> SVector<Self, N> {
+    pub fn inactive_vector<const L: usize>(values: &SVector<f64, N>) -> SVector<Self, L> {
         let mut scalars = Vec::new();
         for i in 0..N {
             let scalar = Self::inactive_scalar(values[i]);
@@ -102,7 +102,7 @@ impl<const N: usize> Ad<N> {
         SVector::from_column_slice(&scalars)
     }
 
-    pub fn inactive_from_slice(values: &[f64]) -> SVector<Self, N> {
+    pub fn inactive_from_slice<const L: usize>(values: &[f64]) -> SVector<Self, L> {
         assert_eq!(
             values.len(),
             N,

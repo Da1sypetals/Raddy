@@ -8,7 +8,9 @@ Do not modify it directly.
 #![allow(unused)]
 
 use crate::Ad;
-use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, RemAssign, Sub, SubAssign};
+use std::ops::{
+    Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Rem, RemAssign, Sub, SubAssign,
+};
 
 impl<const N: usize> Neg for &Ad<N> {
     type Output = Ad<N>;
@@ -50,7 +52,6 @@ impl<const N: usize> Add<&Ad<N>> for &Ad<N> {
     }
 }
 
-
 // &T + T
 impl<const N: usize> Add<Ad<N>> for &Ad<N> {
     type Output = Ad<N>;
@@ -64,7 +65,6 @@ impl<const N: usize> Add<Ad<N>> for &Ad<N> {
         res
     }
 }
-
 
 // T + &T
 impl<const N: usize> Add<&Ad<N>> for Ad<N> {
@@ -80,7 +80,6 @@ impl<const N: usize> Add<&Ad<N>> for Ad<N> {
     }
 }
 
-
 // T + T
 impl<const N: usize> Add<Ad<N>> for Ad<N> {
     type Output = Ad<N>;
@@ -94,7 +93,6 @@ impl<const N: usize> Add<Ad<N>> for Ad<N> {
         res
     }
 }
-
 
 // &T - &T
 impl<const N: usize> Sub<&Ad<N>> for &Ad<N> {
@@ -110,7 +108,6 @@ impl<const N: usize> Sub<&Ad<N>> for &Ad<N> {
     }
 }
 
-
 // &T - T
 impl<const N: usize> Sub<Ad<N>> for &Ad<N> {
     type Output = Ad<N>;
@@ -124,7 +121,6 @@ impl<const N: usize> Sub<Ad<N>> for &Ad<N> {
         res
     }
 }
-
 
 // T - &T
 impl<const N: usize> Sub<&Ad<N>> for Ad<N> {
@@ -140,7 +136,6 @@ impl<const N: usize> Sub<&Ad<N>> for Ad<N> {
     }
 }
 
-
 // T - T
 impl<const N: usize> Sub<Ad<N>> for Ad<N> {
     type Output = Ad<N>;
@@ -154,7 +149,6 @@ impl<const N: usize> Sub<Ad<N>> for Ad<N> {
         res
     }
 }
-
 
 // &T * &T
 impl<const N: usize> Mul<&Ad<N>> for &Ad<N> {
@@ -174,7 +168,6 @@ impl<const N: usize> Mul<&Ad<N>> for &Ad<N> {
     }
 }
 
-
 // &T * T
 impl<const N: usize> Mul<Ad<N>> for &Ad<N> {
     type Output = Ad<N>;
@@ -192,7 +185,6 @@ impl<const N: usize> Mul<Ad<N>> for &Ad<N> {
         res
     }
 }
-
 
 // T * &T
 impl<const N: usize> Mul<&Ad<N>> for Ad<N> {
@@ -212,7 +204,6 @@ impl<const N: usize> Mul<&Ad<N>> for Ad<N> {
     }
 }
 
-
 // T * T
 impl<const N: usize> Mul<Ad<N>> for Ad<N> {
     type Output = Ad<N>;
@@ -230,7 +221,6 @@ impl<const N: usize> Mul<Ad<N>> for Ad<N> {
         res
     }
 }
-
 
 // &T / &T
 impl<const N: usize> Div<&Ad<N>> for &Ad<N> {
@@ -255,7 +245,6 @@ impl<const N: usize> Div<&Ad<N>> for &Ad<N> {
     }
 }
 
-
 // &T / T
 impl<const N: usize> Div<Ad<N>> for &Ad<N> {
     type Output = Ad<N>;
@@ -278,7 +267,6 @@ impl<const N: usize> Div<Ad<N>> for &Ad<N> {
         res
     }
 }
-
 
 // T / &T
 impl<const N: usize> Div<&Ad<N>> for Ad<N> {
@@ -303,7 +291,6 @@ impl<const N: usize> Div<&Ad<N>> for Ad<N> {
     }
 }
 
-
 // T / T
 impl<const N: usize> Div<Ad<N>> for Ad<N> {
     type Output = Ad<N>;
@@ -327,7 +314,6 @@ impl<const N: usize> Div<Ad<N>> for Ad<N> {
     }
 }
 
-
 // &T % &T
 impl<const N: usize> Rem<&Ad<N>> for &Ad<N> {
     type Output = Ad<N>;
@@ -336,7 +322,6 @@ impl<const N: usize> Rem<&Ad<N>> for &Ad<N> {
         unimplemented!();
     }
 }
-
 
 // &T % T
 impl<const N: usize> Rem<Ad<N>> for &Ad<N> {
@@ -347,7 +332,6 @@ impl<const N: usize> Rem<Ad<N>> for &Ad<N> {
     }
 }
 
-
 // T % &T
 impl<const N: usize> Rem<&Ad<N>> for Ad<N> {
     type Output = Ad<N>;
@@ -356,7 +340,6 @@ impl<const N: usize> Rem<&Ad<N>> for Ad<N> {
         unimplemented!();
     }
 }
-
 
 // T % T
 impl<const N: usize> Rem<Ad<N>> for Ad<N> {
@@ -367,15 +350,12 @@ impl<const N: usize> Rem<Ad<N>> for Ad<N> {
     }
 }
 
-
 // T += &T
 impl<const N: usize> AddAssign<&Ad<N>> for Ad<N> {
     fn add_assign(&mut self, rhs: &Ad<N>) {
         *self = self.clone() + rhs;
     }
 }
-
-
 
 // T += T
 impl<const N: usize> AddAssign<Ad<N>> for Ad<N> {
@@ -384,16 +364,12 @@ impl<const N: usize> AddAssign<Ad<N>> for Ad<N> {
     }
 }
 
-
-
 // T -= &T
 impl<const N: usize> SubAssign<&Ad<N>> for Ad<N> {
     fn sub_assign(&mut self, rhs: &Ad<N>) {
         *self = self.clone() - rhs;
     }
 }
-
-
 
 // T -= T
 impl<const N: usize> SubAssign<Ad<N>> for Ad<N> {
@@ -402,16 +378,12 @@ impl<const N: usize> SubAssign<Ad<N>> for Ad<N> {
     }
 }
 
-
-
 // T *= &T
 impl<const N: usize> MulAssign<&Ad<N>> for Ad<N> {
     fn mul_assign(&mut self, rhs: &Ad<N>) {
         *self = self.clone() * rhs;
     }
 }
-
-
 
 // T *= T
 impl<const N: usize> MulAssign<Ad<N>> for Ad<N> {
@@ -420,16 +392,12 @@ impl<const N: usize> MulAssign<Ad<N>> for Ad<N> {
     }
 }
 
-
-
 // T /= &T
 impl<const N: usize> DivAssign<&Ad<N>> for Ad<N> {
     fn div_assign(&mut self, rhs: &Ad<N>) {
         *self = self.clone() / rhs;
     }
 }
-
-
 
 // T /= T
 impl<const N: usize> DivAssign<Ad<N>> for Ad<N> {
@@ -438,8 +406,6 @@ impl<const N: usize> DivAssign<Ad<N>> for Ad<N> {
     }
 }
 
-
-
 // T %= &T
 impl<const N: usize> RemAssign<&Ad<N>> for Ad<N> {
     fn rem_assign(&mut self, rhs: &Ad<N>) {
@@ -447,13 +413,9 @@ impl<const N: usize> RemAssign<&Ad<N>> for Ad<N> {
     }
 }
 
-
-
 // T %= T
 impl<const N: usize> RemAssign<Ad<N>> for Ad<N> {
     fn rem_assign(&mut self, rhs: Ad<N>) {
         unimplemented!();
     }
 }
-
-

@@ -1,6 +1,6 @@
 use approx::assert_abs_diff_eq;
 use nalgebra::{Const, SVector};
-use raddy::ctor;
+use raddy::make;
 use raddy::{
     misc::symbolic_1::{grad_det4, hess_det4},
     Ad,
@@ -15,7 +15,7 @@ fn main() {
     let mut rng = thread_rng();
     let val = rng.gen_range(0.0..10.0);
 
-    let var = ctor::ad(val);
+    let var = make::ad(val);
     let var = &var;
     let y = var.sin() * var + var.ln();
     let g = val * val.cos() + val.sin() + val.recip();
@@ -35,7 +35,7 @@ fn main() {
         .map(|_| rng.gen_range(-4.0..4.0))
         .collect::<Vec<_>>();
 
-    let s: SVector<Ad<N_VEC_4>, N_VEC_4> = ctor::vec(vals);
+    let s: SVector<Ad<N_VEC_4>, N_VEC_4> = make::vec(vals);
     let z = s
         .clone()
         // This reshape is COL MAJOR!!!!!!!!!!!!!

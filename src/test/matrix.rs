@@ -1,6 +1,7 @@
 #![allow(unused)]
 
-use crate::ctor;
+use crate::make;
+use crate::misc::symbolic_3::{grad_mmsin2, hess__mmsin2};
 use crate::{
     misc::symbolic_1::{grad_det3, grad_det4, hess_det3, hess_det4},
     test::EPS,
@@ -21,7 +22,7 @@ fn test_norm_1() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_TEST_MAT_1>, N_TEST_MAT_1> = ctor::vec(vals);
+    let s: SVector<Ad<N_TEST_MAT_1>, N_TEST_MAT_1> = make::vec(vals);
     let z = s.norm();
     // core logic ends ####################################################
 
@@ -59,7 +60,7 @@ fn test_norm_2() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_VEC_2>, N_VEC_2> = ctor::vec(vals);
+    let s: SVector<Ad<N_VEC_2>, N_VEC_2> = make::vec(vals);
     let z = s.clone().reshape_generic(NaConst {}, NaConst {});
     let tr = (z.transpose() * z).trace();
     // core logic ends ####################################################
@@ -85,7 +86,7 @@ fn test_det3() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_VEC_3>, N_VEC_3> = ctor::vec(vals);
+    let s: SVector<Ad<N_VEC_3>, N_VEC_3> = make::vec(vals);
     let z = s
         .clone()
         // This reshape is COL MAJOR!!!!!!!!!!!!!
@@ -121,7 +122,7 @@ fn test_det4() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_VEC_4>, N_VEC_4> = ctor::vec(vals);
+    let s: SVector<Ad<N_VEC_4>, N_VEC_4> = make::vec(vals);
     let z = s
         .clone()
         // This reshape is COL MAJOR!!!!!!!!!!!!!
@@ -145,4 +146,42 @@ fn test_det4() {
     );
     let h_diff = (det.hess - expected_hess).norm_squared();
     assert_abs_diff_eq!(h_diff, 0.0, epsilon = EPS);
+}
+
+#[test]
+fn test_mm() {
+    const N_TEST_MAT_5: usize = 2;
+    type NaConst = Const<N_TEST_MAT_5>;
+    const N_VEC_5: usize = N_TEST_MAT_5 * N_TEST_MAT_5;
+
+    let mut rng = thread_rng();
+
+    for i in 0..100 {
+        // let vals = &[1.2, -4.2, 2.4, 0.4];
+        let vals: &[f64] = &(0..N_VEC_5)
+            .map(|_| rng.gen_range(-4.0..4.0))
+            .collect::<Vec<_>>();
+
+        // core logic #########################################################
+        let s: SVector<Ad<N_VEC_5>, N_VEC_5> = make::vec(vals);
+        let mut z = s
+            .clone()
+            // This reshape is COL MAJOR!!!!!!!!!!!!!
+            .reshape_generic(NaConst {}, NaConst {})
+            .transpose();
+
+        let w = z.clone();
+        z.apply(|x| *x = x.sin());
+
+        let res = (z * w).norm().cos();
+        // core logic ends ####################################################
+
+        let dg = (res.grad() - grad_mmsin2(vals[0], vals[1], vals[2], vals[3])).norm_squared();
+        assert_abs_diff_eq!(dg, 0.0, epsilon = EPS);
+
+        let dh = (res.hess() - hess__mmsin2(vals[0], vals[1], vals[2], vals[3])).norm_squared();
+        assert_abs_diff_eq!(dh, 0.0, epsilon = EPS);
+
+        println!("Test mm iter {}", i);
+    }
 }
