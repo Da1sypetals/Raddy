@@ -35,6 +35,52 @@ println!("{}", y.grad());
 println!("{}", y.hess());
 ```
 
+## Sparse
+1. First define your per-element objective
+```rust
+struct SpringEnergy {
+    k: f64,
+    restlen: f64,
+}
+
+// 2d * 2nodes = 4dof
+impl ObjectiveFunction<4> for SpringEnergy {
+    fn eval(&self, variables: &raddy::types::advec<4, 4>) -> raddy::Ad<4> {
+        let p1 = advec::<4, 2>::new(variables[0].clone(), variables[1].clone());
+        let p2 = advec::<4, 2>::new(variables[2].clone(), variables[3].clone());
+
+        let len = (p2 - p1).norm();
+        // Hooke's law
+        let potential = make::val(0.5 * self.k) * (len - make::val(self.restlen)).powi(2);
+
+        potential
+    }
+}
+
+
+```
+2. Then, define your elements (indices, springs here).
+```rust
+let springs = vec![[0, 1, 2, 3], [2, 3, 4, 5], [0, 1, 4, 5]];
+let x0 = faer::col::from_slice(&[0.0, 0.0, 2.0, 0.0, 1.0, 2.0]).to_owned();
+
+let obj = Objective::new(SpringEnergy {
+    k: 10000.0,
+    restlen: 1.0,
+});
+```
+3. Finally, compute.
+```rust
+let computed = obj.compute(&x0, &springs);
+/*
+pub struct ComputedObjective<const N: usize> {
+    pub value: f64,
+    pub grad: Col<f64>,
+    pub hess_trips: Vec<(usize, usize, f64)>,
+}
+*/
+```
+
 Please see `src/test` for details.
 
 # Notes
