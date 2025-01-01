@@ -1,7 +1,7 @@
 #![allow(unused)]
 
 use crate::make;
-use crate::misc::symbolic_3::{grad_mmsin2, hess__mmsin2};
+use crate::misc::symbolic_3::{grad_mmsin2, hess_mmsin2};
 use crate::{
     misc::symbolic_1::{grad_det3, grad_det4, hess_det3, hess_det4},
     test::EPS,
@@ -179,7 +179,7 @@ fn test_mm() {
         let dg = (res.grad() - grad_mmsin2(vals[0], vals[1], vals[2], vals[3])).norm_squared();
         assert_abs_diff_eq!(dg, 0.0, epsilon = EPS);
 
-        let dh = (res.hess() - hess__mmsin2(vals[0], vals[1], vals[2], vals[3])).norm_squared();
+        let dh = (res.hess() - hess_mmsin2(vals[0], vals[1], vals[2], vals[3])).norm_squared();
         assert_abs_diff_eq!(dh, 0.0, epsilon = EPS);
 
         println!("Test mm iter {}", i);

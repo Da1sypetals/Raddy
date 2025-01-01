@@ -12,6 +12,8 @@
 
 */
 
+#![allow(unused)]
+
 #[inline]
 pub fn grad_mmsin2_0_0(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     (-(((((((a0) * ((a0).sin())) + ((a2) * ((a1).sin()))).powi(2))
@@ -125,7 +127,7 @@ pub fn grad_mmsin2(a0: f64, a1: f64, a2: f64, a3: f64) -> nalgebra::SMatrix<f64,
 */
 
 #[inline]
-pub fn hess__mmsin2_0_0(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_0_0(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a0) * ((a2).sin())) + ((a2) * ((a3).sin()))) * ((a2).sin()))
         + ((0.50000000000000000000_f64)
             * (((2.0000000000000000000_f64) * ((a0).sin()))
@@ -192,7 +194,7 @@ pub fn hess__mmsin2_0_0(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
 }
 
 #[inline]
-pub fn hess__mmsin2_0_1(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_0_1(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a0) * ((a0).sin())) + ((a2) * ((a1).sin()))).powi(2))
         + ((((a0) * ((a2).sin())) + ((a2) * ((a3).sin()))).powi(2))
         + ((((a1) * ((a0).sin())) + ((a3) * ((a1).sin()))).powi(2))
@@ -260,7 +262,7 @@ pub fn hess__mmsin2_0_1(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
 }
 
 #[inline]
-pub fn hess__mmsin2_0_2(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_0_2(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a0) * ((a0).sin())) + ((a2) * ((a1).sin()))).powi(2))
         + ((((a0) * ((a2).sin())) + ((a2) * ((a3).sin()))).powi(2))
         + ((((a1) * ((a0).sin())) + ((a3) * ((a1).sin()))).powi(2))
@@ -327,7 +329,7 @@ pub fn hess__mmsin2_0_2(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
 }
 
 #[inline]
-pub fn hess__mmsin2_0_3(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_0_3(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a0) * ((a0).sin())) + ((a2) * ((a1).sin()))).powi(2))
         + ((((a0) * ((a2).sin())) + ((a2) * ((a3).sin()))).powi(2))
         + ((((a1) * ((a0).sin())) + ((a3) * ((a1).sin()))).powi(2))
@@ -389,7 +391,7 @@ pub fn hess__mmsin2_0_3(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
 }
 
 #[inline]
-pub fn hess__mmsin2_1_0(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_1_0(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a0) * ((a0).sin())) + ((a2) * ((a1).sin()))).powi(2))
         + ((((a0) * ((a2).sin())) + ((a2) * ((a3).sin()))).powi(2))
         + ((((a1) * ((a0).sin())) + ((a3) * ((a1).sin()))).powi(2))
@@ -457,7 +459,7 @@ pub fn hess__mmsin2_1_0(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
 }
 
 #[inline]
-pub fn hess__mmsin2_1_1(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_1_1(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a1) * ((a2).sin())) + ((a3) * ((a3).sin()))) * ((a2).sin()))
         + ((0.50000000000000000000_f64)
             * (((2.0000000000000000000_f64) * ((a0).sin()))
@@ -521,7 +523,7 @@ pub fn hess__mmsin2_1_1(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
 }
 
 #[inline]
-pub fn hess__mmsin2_1_2(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_1_2(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a0) * ((a0).sin())) + ((a2) * ((a1).sin()))).powi(2))
         + ((((a0) * ((a2).sin())) + ((a2) * ((a3).sin()))).powi(2))
         + ((((a1) * ((a0).sin())) + ((a3) * ((a1).sin()))).powi(2))
@@ -586,7 +588,7 @@ pub fn hess__mmsin2_1_2(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
 }
 
 #[inline]
-pub fn hess__mmsin2_1_3(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_1_3(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a0) * ((a0).sin())) + ((a2) * ((a1).sin()))).powi(2))
         + ((((a0) * ((a2).sin())) + ((a2) * ((a3).sin()))).powi(2))
         + ((((a1) * ((a0).sin())) + ((a3) * ((a1).sin()))).powi(2))
@@ -653,7 +655,7 @@ pub fn hess__mmsin2_1_3(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
 }
 
 #[inline]
-pub fn hess__mmsin2_2_0(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_2_0(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a0) * ((a0).sin())) + ((a2) * ((a1).sin()))).powi(2))
         + ((((a0) * ((a2).sin())) + ((a2) * ((a3).sin()))).powi(2))
         + ((((a1) * ((a0).sin())) + ((a3) * ((a1).sin()))).powi(2))
@@ -720,7 +722,7 @@ pub fn hess__mmsin2_2_0(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
 }
 
 #[inline]
-pub fn hess__mmsin2_2_1(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_2_1(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a0) * ((a0).sin())) + ((a2) * ((a1).sin()))).powi(2))
         + ((((a0) * ((a2).sin())) + ((a2) * ((a3).sin()))).powi(2))
         + ((((a1) * ((a0).sin())) + ((a3) * ((a1).sin()))).powi(2))
@@ -785,7 +787,7 @@ pub fn hess__mmsin2_2_1(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
 }
 
 #[inline]
-pub fn hess__mmsin2_2_2(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_2_2(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a0) * ((a0).sin())) + ((a2) * ((a1).sin()))) * ((a1).sin()))
         + ((0.50000000000000000000_f64)
             * (((2.0000000000000000000_f64) * ((a3).sin()))
@@ -849,7 +851,7 @@ pub fn hess__mmsin2_2_2(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
 }
 
 #[inline]
-pub fn hess__mmsin2_2_3(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_2_3(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a0) * ((a0).sin())) + ((a2) * ((a1).sin()))).powi(2))
         + ((((a0) * ((a2).sin())) + ((a2) * ((a3).sin()))).powi(2))
         + ((((a1) * ((a0).sin())) + ((a3) * ((a1).sin()))).powi(2))
@@ -917,7 +919,7 @@ pub fn hess__mmsin2_2_3(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
 }
 
 #[inline]
-pub fn hess__mmsin2_3_0(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_3_0(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a0) * ((a0).sin())) + ((a2) * ((a1).sin()))).powi(2))
         + ((((a0) * ((a2).sin())) + ((a2) * ((a3).sin()))).powi(2))
         + ((((a1) * ((a0).sin())) + ((a3) * ((a1).sin()))).powi(2))
@@ -979,7 +981,7 @@ pub fn hess__mmsin2_3_0(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
 }
 
 #[inline]
-pub fn hess__mmsin2_3_1(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_3_1(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a0) * ((a0).sin())) + ((a2) * ((a1).sin()))).powi(2))
         + ((((a0) * ((a2).sin())) + ((a2) * ((a3).sin()))).powi(2))
         + ((((a1) * ((a0).sin())) + ((a3) * ((a1).sin()))).powi(2))
@@ -1046,7 +1048,7 @@ pub fn hess__mmsin2_3_1(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
 }
 
 #[inline]
-pub fn hess__mmsin2_3_2(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_3_2(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a0) * ((a0).sin())) + ((a2) * ((a1).sin()))).powi(2))
         + ((((a0) * ((a2).sin())) + ((a2) * ((a3).sin()))).powi(2))
         + ((((a1) * ((a0).sin())) + ((a3) * ((a1).sin()))).powi(2))
@@ -1114,7 +1116,7 @@ pub fn hess__mmsin2_3_2(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
 }
 
 #[inline]
-pub fn hess__mmsin2_3_3(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn hess_mmsin2_3_3(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
     ((-(((((((a1) * ((a0).sin())) + ((a3) * ((a1).sin()))) * ((a1).sin()))
         + ((0.50000000000000000000_f64)
             * (((2.0000000000000000000_f64) * ((a3).sin()))
@@ -1180,40 +1182,40 @@ pub fn hess__mmsin2_3_3(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
             .sin()))))
 }
 
-pub fn hess__mmsin2(a0: f64, a1: f64, a2: f64, a3: f64) -> nalgebra::SMatrix<f64, 4, 4> {
+pub fn hess_mmsin2(a0: f64, a1: f64, a2: f64, a3: f64) -> nalgebra::SMatrix<f64, 4, 4> {
     let mut result = nalgebra::SMatrix::zeros();
 
-    result[(0, 0)] = hess__mmsin2_0_0(a0, a1, a2, a3);
+    result[(0, 0)] = hess_mmsin2_0_0(a0, a1, a2, a3);
 
-    result[(0, 1)] = hess__mmsin2_0_1(a0, a1, a2, a3);
+    result[(0, 1)] = hess_mmsin2_0_1(a0, a1, a2, a3);
 
-    result[(0, 2)] = hess__mmsin2_0_2(a0, a1, a2, a3);
+    result[(0, 2)] = hess_mmsin2_0_2(a0, a1, a2, a3);
 
-    result[(0, 3)] = hess__mmsin2_0_3(a0, a1, a2, a3);
+    result[(0, 3)] = hess_mmsin2_0_3(a0, a1, a2, a3);
 
-    result[(1, 0)] = hess__mmsin2_1_0(a0, a1, a2, a3);
+    result[(1, 0)] = hess_mmsin2_1_0(a0, a1, a2, a3);
 
-    result[(1, 1)] = hess__mmsin2_1_1(a0, a1, a2, a3);
+    result[(1, 1)] = hess_mmsin2_1_1(a0, a1, a2, a3);
 
-    result[(1, 2)] = hess__mmsin2_1_2(a0, a1, a2, a3);
+    result[(1, 2)] = hess_mmsin2_1_2(a0, a1, a2, a3);
 
-    result[(1, 3)] = hess__mmsin2_1_3(a0, a1, a2, a3);
+    result[(1, 3)] = hess_mmsin2_1_3(a0, a1, a2, a3);
 
-    result[(2, 0)] = hess__mmsin2_2_0(a0, a1, a2, a3);
+    result[(2, 0)] = hess_mmsin2_2_0(a0, a1, a2, a3);
 
-    result[(2, 1)] = hess__mmsin2_2_1(a0, a1, a2, a3);
+    result[(2, 1)] = hess_mmsin2_2_1(a0, a1, a2, a3);
 
-    result[(2, 2)] = hess__mmsin2_2_2(a0, a1, a2, a3);
+    result[(2, 2)] = hess_mmsin2_2_2(a0, a1, a2, a3);
 
-    result[(2, 3)] = hess__mmsin2_2_3(a0, a1, a2, a3);
+    result[(2, 3)] = hess_mmsin2_2_3(a0, a1, a2, a3);
 
-    result[(3, 0)] = hess__mmsin2_3_0(a0, a1, a2, a3);
+    result[(3, 0)] = hess_mmsin2_3_0(a0, a1, a2, a3);
 
-    result[(3, 1)] = hess__mmsin2_3_1(a0, a1, a2, a3);
+    result[(3, 1)] = hess_mmsin2_3_1(a0, a1, a2, a3);
 
-    result[(3, 2)] = hess__mmsin2_3_2(a0, a1, a2, a3);
+    result[(3, 2)] = hess_mmsin2_3_2(a0, a1, a2, a3);
 
-    result[(3, 3)] = hess__mmsin2_3_3(a0, a1, a2, a3);
+    result[(3, 3)] = hess_mmsin2_3_3(a0, a1, a2, a3);
 
     result
 }
