@@ -1,3 +1,4 @@
+use approx::assert_abs_diff_eq;
 use faer::{prelude::SpSolver, sparse::SparseColMat, Col};
 use raddy::{
     make,
@@ -28,7 +29,7 @@ fn main() {
     // todo!("This example is undone");
 
     let springs = vec![[0, 1, 2, 3], [2, 3, 4, 5], [0, 1, 4, 5]];
-    let x0 = faer::col::from_slice(&[0.0, 0.0, 2.0, 0.0, 1.0, 2.0]).to_owned();
+    let x0 = faer::col::from_slice(&[0.0, 0.0, 0.001, 0.0, 0.001, 0.01]).to_owned();
 
     let obj = SpringEnergy {
         k: 10000.0,
@@ -38,15 +39,14 @@ fn main() {
     let mut i = 0;
     let mut x = x0.clone();
     let mut dir: Col<f64>;
+    // Newton Raphson
     while {
         let grad = obj.grad(&x, &springs);
         let mut hesstrip = obj.hess_trips(&x, &springs);
-        // for i in 0..6 {
-        //     hesstrip.push((i, i, 1.0));
-        // }
+        for i in 0..6 {
+            hesstrip.push((i, i, 1.0));
+        }
         let hess = SparseColMat::try_new_from_triplets(6, 6, &hesstrip).unwrap();
-
-        dbg!(hess.to_dense().determinant());
 
         // wtf matrix is not invertible?
         dir = hess.sp_lu().unwrap().solve(-&grad);
@@ -67,5 +67,12 @@ fn main() {
         println!("Len 3 = {}", (p3 - p1).norm());
     }
 
-    println!("Current potential: {}", obj.value(&x, &springs));
+    println!("\nFinal potential: {}", obj.value(&x, &springs));
+    let p1 = vec::<2>::new(x[0], x[1]);
+    let p2 = vec::<2>::new(x[2], x[3]);
+    let p3 = vec::<2>::new(x[4], x[5]);
+
+    assert_abs_diff_eq!((p2 - p1).norm(), 1.0, epsilon = 1e-4);
+    assert_abs_diff_eq!((p3 - p2).norm(), 1.0, epsilon = 1e-4);
+    assert_abs_diff_eq!((p3 - p1).norm(), 1.0, epsilon = 1e-4);
 }

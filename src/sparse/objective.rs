@@ -22,23 +22,25 @@ pub trait Objective<const N: usize> {
         let mut grad = Col::zeros(x.nrows());
         let mut hess_trips = Vec::new();
 
-        operand_indices.iter().for_each(|&ind| {
-            let binding = ind.map(|i| x[i]);
-            let values = binding.as_slice();
-            let vars: advec<N, N> = make::vec(values);
+        operand_indices.iter().for_each(|&global_inds| {
+            let vals = global_inds.map(|i| x[i]);
+            let vals_slice = vals.as_slice();
+            let vars = make::vec(vals_slice);
 
             let obj = self.eval(&vars);
 
-            let ind = ind.into_iter().enumerate();
+            let ind = global_inds.into_iter().enumerate();
 
-            value += obj.value();
+            value += obj.value;
 
             ind.clone()
-                .for_each(|(ilocal, iglobal)| grad[iglobal] = obj.grad[ilocal]);
+                .for_each(|(ilocal, iglobal)| grad[iglobal] += obj.grad[ilocal]); // THIS IS += NOT = !!!!!!!!!!!
+
+            // dbg!(&grad);
 
             ind.clone().cartesian_product(ind).for_each(
                 |((ixlocal, ixglobal), (iylocal, iyglobal))| {
-                    hess_trips.push((ixglobal, iyglobal, obj.hess()[(ixlocal, iylocal)]));
+                    hess_trips.push((ixglobal, iyglobal, obj.hess[(ixlocal, iylocal)]));
                 },
             );
         });
@@ -60,7 +62,7 @@ pub trait Objective<const N: usize> {
 
             let obj = self.eval(&vars);
 
-            res += obj.value();
+            res += obj.value;
         });
 
         res
@@ -76,9 +78,10 @@ pub trait Objective<const N: usize> {
 
             let obj = self.eval(&vars);
 
+            // THIS IS += NOT = !!!!!!!!!!!
             ind.into_iter()
                 .enumerate()
-                .for_each(|(ilocal, iglobal)| res[iglobal] = obj.grad[ilocal]);
+                .for_each(|(ilocal, iglobal)| res[iglobal] += obj.grad[ilocal]);
         });
 
         res
@@ -98,7 +101,7 @@ pub trait Objective<const N: usize> {
 
             ind.clone().cartesian_product(ind).for_each(
                 |((ixlocal, ixglobal), (iylocal, iyglobal))| {
-                    trips.push((ixglobal, iyglobal, obj.hess()[(ixlocal, iylocal)]));
+                    trips.push((ixglobal, iyglobal, obj.hess[(ixlocal, iylocal)]));
                 },
             );
         });
