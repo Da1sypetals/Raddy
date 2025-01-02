@@ -5,12 +5,12 @@ use crate::{
     },
     sparse::objective::Objective,
     test::EPS,
-    types::{advec, vec},
+    types::advec,
     Ad,
 };
 use approx::assert_abs_diff_eq;
-use faer::{prelude::SpSolver, sparse::SparseColMat, Col};
-use na::{DMatrix, SVector};
+use faer::sparse::SparseColMat;
+use na::SVector;
 
 struct SpringEnergy {
     k: f64,

@@ -12,6 +12,8 @@
 
 */
 
+#![allow(unused)]
+
 #[inline]
 pub fn spring3_energy(
     k: f64,
