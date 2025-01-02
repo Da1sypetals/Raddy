@@ -19,7 +19,8 @@ struct SpringEnergy {
 
 // 2d * 2nodes = 4dof
 impl Objective<4> for SpringEnergy {
-    fn eval(&self, variables: &advec<4, 4>) -> Ad<4> {
+    type EvalArgs = ();
+    fn eval(&self, variables: &advec<4, 4>, args: &()) -> Ad<4> {
         let p1 = advec::<4, 2>::new(variables[0].clone(), variables[1].clone());
         let p2 = advec::<4, 2>::new(variables[2].clone(), variables[3].clone());
 
@@ -43,7 +44,7 @@ fn test_mass_spring_3() {
 
     let obj = SpringEnergy { k, restlen };
 
-    let computed = obj.compute(&x0, &springs);
+    let computed = obj.compute(&x0, &springs, &());
 
     let e = computed.value;
     let ee = spring3_energy(k, restlen, x0[0], x0[1], x0[2], x0[3], x0[4], x0[5]);
@@ -78,7 +79,7 @@ fn test_mass_spring_4() {
 
     let obj = SpringEnergy { k, restlen };
 
-    let computed = obj.compute(&x0, &springs);
+    let computed = obj.compute(&x0, &springs, &());
 
     let e = computed.value;
     let ee = spring4_energy(

@@ -14,20 +14,26 @@ pub struct ComputedObjective<const N: usize> {
 }
 
 pub trait Objective<const N: usize> {
-    fn eval(&self, variables: &advec<N, N>) -> Ad<N>;
+    type EvalArgs;
+    fn eval(&self, variables: &advec<N, N>, args: &Self::EvalArgs) -> Ad<N>;
 
     /// Compute value, grad, hess(triplets) in one go.
-    fn compute(&self, x: &Col<f64>, operand_indices: &[[usize; N]]) -> ComputedObjective<N> {
+    fn compute(
+        &self,
+        x: &Col<f64>,
+        operand_indices: &[[usize; N]],
+        args: &Self::EvalArgs,
+    ) -> ComputedObjective<N> {
         let mut value = 0.0;
         let mut grad = Col::zeros(x.nrows());
         let mut hess_trips = Vec::new();
 
-        operand_indices.iter().for_each(|&global_inds| {
+        for &global_inds in operand_indices {
             let vals = global_inds.map(|i| x[i]);
             let vals_slice = vals.as_slice();
             let vars = make::vec(vals_slice);
 
-            let obj = self.eval(&vars);
+            let obj = self.eval(&vars, args);
 
             let ind = global_inds.into_iter().enumerate();
 
@@ -43,7 +49,7 @@ pub trait Objective<const N: usize> {
                     hess_trips.push((ixglobal, iyglobal, obj.hess[(ixlocal, iylocal)]));
                 },
             );
-        });
+        }
 
         ComputedObjective {
             value,
@@ -52,7 +58,7 @@ pub trait Objective<const N: usize> {
         }
     }
 
-    fn value(&self, x: &Col<f64>, operand_indices: &[[usize; N]]) -> f64 {
+    fn value(&self, x: &Col<f64>, operand_indices: &[[usize; N]], args: &Self::EvalArgs) -> f64 {
         let mut res = 0.0;
 
         operand_indices.iter().for_each(|&ind| {
@@ -60,7 +66,7 @@ pub trait Objective<const N: usize> {
             let values = binding.as_slice();
             let vars: advec<N, N> = make::vec(values);
 
-            let obj = self.eval(&vars);
+            let obj = self.eval(&vars, args);
 
             res += obj.value;
         });
@@ -68,7 +74,12 @@ pub trait Objective<const N: usize> {
         res
     }
 
-    fn grad(&self, x: &Col<f64>, operand_indices: &[[usize; N]]) -> Col<f64> {
+    fn grad(
+        &self,
+        x: &Col<f64>,
+        operand_indices: &[[usize; N]],
+        args: &Self::EvalArgs,
+    ) -> Col<f64> {
         let mut res = Col::zeros(x.nrows());
 
         operand_indices.iter().for_each(|&ind| {
@@ -76,7 +87,7 @@ pub trait Objective<const N: usize> {
             let values = binding.as_slice();
             let vars: advec<N, N> = make::vec(values);
 
-            let obj = self.eval(&vars);
+            let obj = self.eval(&vars, args);
 
             // THIS IS += NOT = !!!!!!!!!!!
             ind.into_iter()
@@ -87,7 +98,12 @@ pub trait Objective<const N: usize> {
         res
     }
 
-    fn hess_trips(&self, x: &Col<f64>, operand_indices: &[[usize; N]]) -> Vec<(usize, usize, f64)> {
+    fn hess_trips(
+        &self,
+        x: &Col<f64>,
+        operand_indices: &[[usize; N]],
+        args: &Self::EvalArgs,
+    ) -> Vec<(usize, usize, f64)> {
         let mut trips = Vec::new();
 
         operand_indices.iter().for_each(|&ind| {
@@ -95,7 +111,7 @@ pub trait Objective<const N: usize> {
             let values = binding.as_slice();
             let vars: advec<N, N> = make::vec(values);
 
-            let obj = self.eval(&vars);
+            let obj = self.eval(&vars, args);
 
             let ind = ind.into_iter().enumerate();
 
@@ -113,8 +129,9 @@ pub trait Objective<const N: usize> {
         &self,
         x: &Col<f64>,
         operand_indices: &[[usize; N]],
+        args: &Self::EvalArgs,
     ) -> Result<SparseColMat<usize, f64>, CreationError> {
         let n = x.nrows();
-        SparseColMat::try_new_from_triplets(n, n, &self.hess_trips(x, operand_indices))
+        SparseColMat::try_new_from_triplets(n, n, &self.hess_trips(x, operand_indices, args))
     }
 }

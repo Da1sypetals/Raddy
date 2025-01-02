@@ -13,7 +13,8 @@ struct SpringEnergy {
 
 // 2d * 2nodes = 4dof
 impl Objective<4> for SpringEnergy {
-    fn eval(&self, variables: &raddy::types::advec<4, 4>) -> raddy::Ad<4> {
+    type EvalArgs = ();
+    fn eval(&self, variables: &raddy::types::advec<4, 4>, args: &()) -> raddy::Ad<4> {
         let p1 = advec::<4, 2>::new(variables[0].clone(), variables[1].clone());
         let p2 = advec::<4, 2>::new(variables[2].clone(), variables[3].clone());
 
@@ -41,8 +42,8 @@ fn main() {
     let mut dir: Col<f64>;
     // Newton Raphson
     while {
-        let grad = obj.grad(&x, &springs);
-        let mut hesstrip = obj.hess_trips(&x, &springs);
+        let grad = obj.grad(&x, &springs, &());
+        let mut hesstrip = obj.hess_trips(&x, &springs, &());
         for i in 0..6 {
             hesstrip.push((i, i, 1.0));
         }
@@ -67,7 +68,7 @@ fn main() {
         println!("Len 3 = {}", (p3 - p1).norm());
     }
 
-    println!("\nFinal potential: {}", obj.value(&x, &springs));
+    println!("\nFinal potential: {}", obj.value(&x, &springs, &()));
     let p1 = vec::<2>::new(x[0], x[1]);
     let p2 = vec::<2>::new(x[2], x[3]);
     let p3 = vec::<2>::new(x[4], x[5]);
