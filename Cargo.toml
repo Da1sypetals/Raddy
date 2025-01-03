@@ -2,7 +2,7 @@
 name = "raddy-ad"
 version = "0.0.0-alpha1"
 edition = "2021"
-license = "LICENSE.md"
+license = "Apache-2.0"
 description = "An automatic differentiation system for geometry and simulation."
 repository = "https://github.com/Da1sypetals/Raddy"
 readme = "README.md"
