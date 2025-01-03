@@ -14,7 +14,7 @@ struct SpringEnergy {
 // 2d * 2nodes = 4dof
 impl Objective<4> for SpringEnergy {
     type EvalArgs = ();
-    fn eval(&self, variables: &raddy::types::advec<4, 4>, args: &()) -> raddy::Ad<4> {
+    fn eval(&self, variables: &raddy::types::advec<4, 4>, _: &()) -> raddy::Ad<4> {
         let p1 = advec::<4, 2>::new(variables[0].clone(), variables[1].clone());
         let p2 = advec::<4, 2>::new(variables[2].clone(), variables[3].clone());
 

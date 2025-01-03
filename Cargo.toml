@@ -2,6 +2,12 @@
 name = "raddy"
 version = "0.1.0"
 edition = "2021"
+license = "LICENSE.md"
+description = "An automatic differentiation system for geometry and simulation."
+documentation = ""
+repository = "https://github.com/Da1sypetals/Raddy"
+readme = ""
+
 
 [[bin]]
 name = "basic"
