@@ -3,8 +3,16 @@ Trying to port some portion of [TinyAD](https://github.com/patr-schm/TinyAD) to 
 
 # Usage
 
+First add to your `Cargo.toml`:
+```toml
+raddy-ad = "*"
+```
+>_Sadly the name `raddy` is occupied by a non-maintaining crate whose owner does not seem to want to negotiate with me. However the lib name (the one you import in your `.rs` files is still `raddy`_ .
+
 ## Scalars
 ```rust
+use raddy::make;
+
 let x = make::ad(3.421);
 let x = &x; // Please read section: Notes
 let y = x.sin() * x + x.ln();
@@ -82,7 +90,7 @@ pub struct ComputedObjective<const N: usize> {
 */
 ```
 
-Please see `src/test` for details.
+Please see `src/examples` and `src/test` for details.
 
 # Notes
 1. `Copy` is **not** implemented for `Ad<N>` types, since its cost is not negligible.

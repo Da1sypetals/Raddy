@@ -1,13 +1,16 @@
 [package]
-name = "raddy"
-version = "0.1.0"
+name = "raddy-ad"
+version = "0.0.0-alpha1"
 edition = "2021"
 license = "LICENSE.md"
 description = "An automatic differentiation system for geometry and simulation."
-documentation = ""
 repository = "https://github.com/Da1sypetals/Raddy"
-readme = ""
+readme = "README.md"
+keywords = ["mathematics", "graphics", "simulation", "science"]
 
+[lib]
+name = "raddy"
+path = "src/lib.rs"
 
 [[bin]]
 name = "basic"
