@@ -1,8 +1,6 @@
 use crate::Ad;
 use na::SVector;
 
-/// Utility functions for creating automatic differentiation (Ad) values and vectors
-
 #[inline]
 /// Creates an active scalar Ad value with single input dimension
 ///

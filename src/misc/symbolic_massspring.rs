@@ -13,6 +13,7 @@
 */
 
 #![allow(unused)]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
 #[inline]
 pub fn spring3_energy(

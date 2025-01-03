@@ -13,6 +13,7 @@
 */
 
 #![allow(unused)]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
 #[inline]
 pub fn grad_001(s: f64) -> f64 {

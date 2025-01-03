@@ -12,6 +12,7 @@
 
 */
 #![allow(unused)]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
 #[inline]
 pub fn grad_costan(s: f64) -> f64 {

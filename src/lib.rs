@@ -39,6 +39,11 @@ use types::{mat, vec};
 
 /// Automatic differentiation value tracking first and second derivatives
 ///
+/// # Value getters:
+/// - `value() -> f64`: Returns the current numerical value
+/// - `grad() -> SVector<f64, N>`: Returns the gradient vector 
+/// - `hess() -> SMatrix<f64, N, N>`: Returns the Hessian matrix 
+///
 /// # Type Parameters
 /// * `N` - The dimension of the input space (number of variables)
 ///

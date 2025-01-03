@@ -125,7 +125,7 @@ Please see `src/examples` and `src/test` for details.
     - [x] Mass spring: grad/hess
     - [x] Mass spring: results
     - [ ] Neo Hookean
-  - [ ] Make an example: mass spring system
+  - [x] Make an example: [mass-spring system](https://github.com/Da1sypetals/Raddy-examples)
 - [ ] An option to allocate hessian on heap
 - [ ] `f64` & `Scalar` Interop (How to? Seems sort of impossible due to [orphan rule](https://doc.rust-lang.org/book/ch10-02-traits.html)) (We use the same sort of workaround as `faer`)
 

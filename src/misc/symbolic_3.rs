@@ -13,9 +13,10 @@
 */
 
 #![allow(unused)]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
 #[inline]
-pub fn grad_mmsin2_0_0(a0: f64, a1: f64, a2: f64, a3: f64) -> f64 {
+pub fn grad_mmsin2_0_0(a0: f64, a1: f64, a2: f64, a3:            f64) -> f64 {
     (-(((((((a0) * ((a0).sin())) + ((a2) * ((a1).sin()))).powi(2))
         + ((((a0) * ((a2).sin())) + ((a2) * ((a3).sin()))).powi(2))
         + ((((a1) * ((a0).sin())) + ((a3) * ((a1).sin()))).powi(2))
