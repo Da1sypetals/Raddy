@@ -7,16 +7,22 @@ First add to your `Cargo.toml`:
 ```toml
 raddy-ad = "*"
 ```
->_Sadly the name `raddy` is occupied by a non-maintaining crate whose owner does not seem to want to negotiate with me. However the lib name (the one you import in your `.rs` files is still `raddy`_ .
+>_Sadly the name `raddy` is occupied by a non-maintaining crate whose owner does not seem to want to negotiate with me. However the lib name (the one you import in your `.rs` code) is still `raddy`_ .
 
 ## Scalars
 ```rust
 use raddy::make;
 
-let x = make::ad(3.421);
-let x = &x; // Please read section: Notes
-let y = x.sin() * x + x.ln();
-println!("{}", y.grad()[(0, 0)]);
+fn main() {
+    let val = 1.14;
+    let var = make::ad(val);
+    let var = &var;
+    let y = var.sin() * var + var.ln();
+    let grad = val * val.cos() + val.sin() + val.recip();
+    let hess = -val * val.sin() + 2.0 * val.cos() - val.powi(-2);
+    dbg!((y.grad()[(    0, 0)] - grad).abs());
+    dbg!((y.hess()[(0, 0)] - hess).abs());
+}
 ```
 
 ## Vectors

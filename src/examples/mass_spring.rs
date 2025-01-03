@@ -1,10 +1,7 @@
 use approx::assert_abs_diff_eq;
 use faer::{prelude::SpSolver, sparse::SparseColMat, Col};
-use raddy::{
-    make,
-    sparse::objective::Objective,
-    types::{advec, vec},
-};
+use nalgebra::SVector;
+use raddy::{make, sparse::objective::Objective, types::advec};
 
 struct SpringEnergy {
     k: f64,
@@ -58,9 +55,9 @@ fn main() {
 
         i += 1;
 
-        let p1 = vec::<2>::new(x[0], x[1]);
-        let p2 = vec::<2>::new(x[2], x[3]);
-        let p3 = vec::<2>::new(x[4], x[5]);
+        let p1 = SVector::<f64, 2>::new(x[0], x[1]);
+        let p2 = SVector::<f64, 2>::new(x[2], x[3]);
+        let p3 = SVector::<f64, 2>::new(x[4], x[5]);
 
         println!("\nIter {}", i);
         println!("Len 1 = {}", (p2 - p1).norm());
@@ -69,9 +66,9 @@ fn main() {
     }
 
     println!("\nFinal potential: {}", obj.value(&x, &springs, &()));
-    let p1 = vec::<2>::new(x[0], x[1]);
-    let p2 = vec::<2>::new(x[2], x[3]);
-    let p3 = vec::<2>::new(x[4], x[5]);
+    let p1 = SVector::<f64, 2>::new(x[0], x[1]);
+    let p2 = SVector::<f64, 2>::new(x[2], x[3]);
+    let p3 = SVector::<f64, 2>::new(x[4], x[5]);
 
     assert_abs_diff_eq!((p2 - p1).norm(), 1.0, epsilon = 1e-4);
     assert_abs_diff_eq!((p3 - p2).norm(), 1.0, epsilon = 1e-4);

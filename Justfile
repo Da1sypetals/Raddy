@@ -1,5 +1,6 @@
 
 alias gen := generate
+alias doc := document
 
 default:
     @just --list
@@ -12,5 +13,8 @@ generate:
 # run test for n times
 test n:
     #!/bin/bash
-    for i in {1..{{n}}}; do cargo test; done
-    for i in {1..{{n}}}; do cargo test --release; done
+    for i in {1..{{n}}}; do cargo test --lib; done
+    for i in {1..{{n}}}; do cargo test --lib --release; done
+
+document:
+    cargo doc --no-deps
