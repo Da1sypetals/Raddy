@@ -19,3 +19,7 @@ test n:
 # build documentation
 document:
     cargo doc --no-deps
+
+push:
+    git push github master # to github
+    git push bb master # to bitbucket
