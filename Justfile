@@ -23,3 +23,8 @@ document:
 push:
     git push github master # to github
     git push bb master # to bitbucket
+
+version:
+    git push github master # to github
+    git push bb master # to bitbucket
+    cargo publish --registry crates-io

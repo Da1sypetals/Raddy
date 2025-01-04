@@ -7,9 +7,6 @@ pub mod compare;
 /// Factory functions for creating AD values and vectors.
 pub mod make;
 
-/// Matrix operations, decompositions, and specialized routines.
-pub mod matrix;
-
 /// Miscellaneous utilities and experimental features.
 mod misc;
 
