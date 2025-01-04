@@ -15,7 +15,7 @@ use raddy::make::var;
 
 fn main() {
     let val = 1.14;
-    let var = var::ad(val);
+    let var = var::scalar(val);
     let var = &var;
     let y = var.sin() * var + var.ln();
     let grad = val * val.cos() + val.sin() + val.recip();
