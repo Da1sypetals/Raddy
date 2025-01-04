@@ -28,7 +28,7 @@ Do not modify it directly.
 
 */
 use crate::Ad;
-use nalgebra::SMatrix;
+use na::SMatrix;
 use std::ops::Mul;
 """
     res += scalar_matrix_mul_template(scalar_ref=False, matrix_ref=False)

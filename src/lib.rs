@@ -32,7 +32,7 @@ pub mod types;
 // ################################### Implementation ###################################
 // ######################################################################################
 
-use nalgebra::{SMatrix, SVector};
+use na::{SMatrix, SVector};
 use types::{mat, vec};
 
 // ################################### Data Structure ###################################
@@ -41,8 +41,8 @@ use types::{mat, vec};
 ///
 /// # Value getters:
 /// - `value() -> f64`: Returns the current numerical value
-/// - `grad() -> SVector<f64, N>`: Returns the gradient vector 
-/// - `hess() -> SMatrix<f64, N, N>`: Returns the Hessian matrix 
+/// - `grad() -> SVector<f64, N>`: Returns the gradient vector
+/// - `hess() -> SMatrix<f64, N, N>`: Returns the Hessian matrix
 ///
 /// # Type Parameters
 /// * `N` - The dimension of the input space (number of variables)
@@ -229,10 +229,10 @@ impl<const N: usize> Ad<N> {
     /// # Returns
     /// A vector of active AD values where each element has unit gradient
     /// in its corresponding dimension
-    pub fn active_vector(values: &SVector<f64, N>) -> SVector<Self, N> {
+    pub fn active_vector(vector: &SVector<f64, N>) -> SVector<Self, N> {
         let mut scalars = Vec::new();
         for i in 0..N {
-            let scalar = Self::_active_scalar_with_index(values[i], i);
+            let scalar = Self::_active_scalar_with_index(vector[i], i);
             scalars.push(scalar);
         }
 

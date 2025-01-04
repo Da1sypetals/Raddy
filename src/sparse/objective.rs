@@ -1,4 +1,4 @@
-use crate::{make, types::advec, Ad};
+use crate::{make::var, types::advec, Ad};
 use faer::{
     sparse::{CreationError, SparseColMat},
     Col,
@@ -71,7 +71,7 @@ pub trait Objective<const N: usize> {
     ) -> Ad<N> {
         let vals = global_inds.map(|i| x[i]);
         let vals_slice = vals.as_slice();
-        let vars = make::vec(vals_slice);
+        let vars = var::vector_from_slice(vals_slice);
         self.eval(&vars, args)
     }
 

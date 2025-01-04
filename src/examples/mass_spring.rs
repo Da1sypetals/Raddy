@@ -1,7 +1,7 @@
 use approx::assert_abs_diff_eq;
 use faer::{prelude::SpSolver, sparse::SparseColMat, Col};
 use nalgebra::SVector;
-use raddy::{make, sparse::objective::Objective, types::advec};
+use raddy::{make::val, sparse::objective::Objective, types::advec};
 
 struct SpringEnergy {
     k: f64,
@@ -17,7 +17,7 @@ impl Objective<4> for SpringEnergy {
 
         let len = (p2 - p1).norm();
         // Hooke's law
-        let potential = make::val(0.5 * self.k) * (len - make::val(self.restlen)).powi(2);
+        let potential = val::scalar(0.5 * self.k) * (len - val::scalar(self.restlen)).powi(2);
 
         potential
     }

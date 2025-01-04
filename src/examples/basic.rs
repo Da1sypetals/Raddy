@@ -1,6 +1,6 @@
 use approx::assert_abs_diff_eq;
 use nalgebra::{Const, SVector};
-use raddy::make;
+use raddy::make::var;
 use raddy::Ad;
 use rand::{thread_rng, Rng};
 
@@ -12,7 +12,7 @@ fn main() {
     let mut rng = thread_rng();
     let val = rng.gen_range(0.0..10.0);
 
-    let var = make::ad(val);
+    let var = var::scalar(val);
     let var = &var;
     let y = var.sin() * var + var.ln();
     let g = val * val.cos() + val.sin() + val.recip();
@@ -32,7 +32,7 @@ fn main() {
         .map(|_| rng.gen_range(-4.0..4.0))
         .collect::<Vec<_>>();
 
-    let s: SVector<Ad<N_VEC_4>, N_VEC_4> = make::vec(vals);
+    let s: SVector<Ad<N_VEC_4>, N_VEC_4> = var::vector_from_slice(vals);
     let z = s
         .clone()
         // This reshape is COL MAJOR!!!!!!!!!!!!!

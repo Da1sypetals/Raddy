@@ -1,5 +1,5 @@
 use crate::{
-    make,
+    make::val,
     misc::symbolic_massspring::{
         spring3_energy, spring3_grad, spring3_hess, spring4_energy, spring4_grad, spring4_hess,
     },
@@ -26,7 +26,7 @@ impl Objective<4> for SpringEnergy {
 
         let len = (p2 - p1).norm();
         // Hooke's law
-        let potential = make::val(0.5 * self.k) * (len - make::val(self.restlen)).powi(2);
+        let potential = val::scalar(0.5 * self.k) * (len - val::scalar(self.restlen)).powi(2);
 
         potential
     }

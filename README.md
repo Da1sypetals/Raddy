@@ -11,11 +11,11 @@ raddy-ad = "*"
 
 ## Scalars
 ```rust
-use raddy::make;
+use raddy::make::var;
 
 fn main() {
     let val = 1.14;
-    let var = make::ad(val);
+    let var = var::ad(val);
     let var = &var;
     let y = var.sin() * var + var.ln();
     let grad = val * val.cos() + val.sin() + val.recip();
@@ -37,7 +37,7 @@ let vals: &[f64] = &(0..N_VEC_4)
     .map(|_| rng.gen_range(-4.0..4.0))
     .collect::<Vec<_>>();
 
-let s: SVector<Ad<N_VEC_4>, N_VEC_4> = make::vec(vals);
+let s: SVector<Ad<N_VEC_4>, N_VEC_4> = var::vector(vals);
 let z = s
     .clone()
     // This reshape is COL MAJOR!!!!!!!!!!!!!
@@ -65,7 +65,7 @@ impl ObjectiveFunction<4> for SpringEnergy {
 
         let len = (p2 - p1).norm();
         // Hooke's law
-        let potential = make::val(0.5 * self.k) * (len - make::val(self.restlen)).powi(2);
+        let potential = val::scalar(0.5 * self.k) * (len - val::scalar(self.restlen)).powi(2);
 
         potential
     }

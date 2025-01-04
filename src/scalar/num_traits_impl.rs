@@ -1,6 +1,6 @@
 #![allow(unused)]
 use crate::Ad;
-use nalgebra::SMatrix;
+use na::SMatrix;
 use num_traits::{Num, One, Signed, Zero};
 use std::{
     fmt::Display,

@@ -1,5 +1,5 @@
 use crate::Ad;
-use nalgebra::SMatrix;
+use na::SMatrix;
 
 pub trait AdMatrixOps {
     fn scale(&self, factor: f64) -> Self;

@@ -3,33 +3,6 @@ use itertools::Itertools;
 use na::{SMatrix, SVector};
 
 #[inline]
-/// Creates an active scalar Ad value with single input dimension
-///
-/// # Arguments
-/// * `value` - The scalar value to wrap in an Ad type
-///
-/// # Returns
-/// An Ad<1> instance representing an active scalar value with single input dimension
-pub fn ad(value: f64) -> Ad<1> {
-    Ad::active_scalar(value)
-}
-
-#[inline]
-/// Creates a vector of active Ad values with specified input and vector dimensions
-///
-/// # Arguments
-/// * `values` - Slice of f64 values to convert to active Ad values
-///
-/// # Type Parameters
-/// * `L` - Both the input dimension (for gradients) and vector length
-///
-/// # Returns
-/// An SVector of `Ad<L>` values where each element is active
-pub fn vec<const L: usize>(values: &[f64]) -> SVector<Ad<L>, L> {
-    Ad::active_from_slice(values)
-}
-
-#[inline]
 /// Creates an inactive scalar Ad value with specified inputd dimensions
 ///
 /// # Arguments
@@ -40,7 +13,7 @@ pub fn vec<const L: usize>(values: &[f64]) -> SVector<Ad<L>, L> {
 ///
 /// # Returns
 /// An `Ad<N>` instance representing an inactive scalar value
-pub fn val<const N: usize>(value: f64) -> Ad<N> {
+pub fn scalar<const N: usize>(value: f64) -> Ad<N> {
     Ad::inactive_scalar(value)
 }
 
@@ -56,7 +29,7 @@ pub fn val<const N: usize>(value: f64) -> Ad<N> {
 ///
 /// # Returns
 /// An SVector of `Ad<N>` values where each element is inactive
-pub fn valvec_from_slice<const N: usize, const L: usize>(values: &[f64]) -> SVector<Ad<N>, L> {
+pub fn vector_from_slice<const N: usize, const L: usize>(values: &[f64]) -> SVector<Ad<N>, L> {
     Ad::inactive_from_slice(values)
 }
 
@@ -71,7 +44,7 @@ pub fn valvec_from_slice<const N: usize, const L: usize>(values: &[f64]) -> SVec
 ///
 /// # Returns
 /// An SVector of `Ad<N>` values where each element is inactive
-pub fn valvec<const N: usize, const L: usize>(values: &[f64]) -> SVector<Ad<N>, L> {
+pub fn vectpr<const N: usize, const L: usize>(values: &[f64]) -> SVector<Ad<N>, L> {
     Ad::inactive_from_slice(values)
 }
 
@@ -90,7 +63,7 @@ pub fn valvec<const N: usize, const L: usize>(values: &[f64]) -> SVector<Ad<N>, 
 ///
 /// # Returns
 /// An SMatrix of `Ad<N>` values where each element is inactive
-pub fn valmat_from_row_slice<const N: usize, const R: usize, const C: usize>(
+pub fn matrix_from_row_slice<const N: usize, const R: usize, const C: usize>(
     values: &[f64],
 ) -> SMatrix<Ad<N>, R, C> {
     assert_eq!(
@@ -126,7 +99,7 @@ pub fn valmat_from_row_slice<const N: usize, const R: usize, const C: usize>(
 ///
 /// # Returns
 /// An SMatrix of `Ad<N>` values where each element is inactive
-pub fn valmat_from_column_slice<const N: usize, const R: usize, const C: usize>(
+pub fn matrix_from_column_slice<const N: usize, const R: usize, const C: usize>(
     values: &[f64],
 ) -> SMatrix<Ad<N>, R, C> {
     assert_eq!(

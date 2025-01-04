@@ -5,7 +5,7 @@ Do not modify it directly.
 
 */
 use crate::Ad;
-use nalgebra::SMatrix;
+use na::SMatrix;
 use std::ops::Mul;
 
 impl<const N: usize, const R: usize, const C: usize> Mul<SMatrix<Ad<N>, R, C>> for Ad<N> {

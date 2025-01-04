@@ -1,6 +1,6 @@
 #![allow(unused)]
 
-use crate::make;
+use crate::make::{self, var};
 use crate::misc::symbolic_3::{grad_mmsin2, hess_mmsin2};
 use crate::{
     misc::symbolic_1::{grad_det3, grad_det4, hess_det3, hess_det4},
@@ -22,7 +22,7 @@ fn test_norm_1() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_TEST_MAT_1>, N_TEST_MAT_1> = make::vec(vals);
+    let s: SVector<Ad<N_TEST_MAT_1>, N_TEST_MAT_1> = var::vector_from_slice(vals);
     let z = s.norm();
     // core logic ends ####################################################
 
@@ -60,7 +60,7 @@ fn test_norm_2() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_VEC_2>, N_VEC_2> = make::vec(vals);
+    let s: SVector<Ad<N_VEC_2>, N_VEC_2> = var::vector_from_slice(vals);
     let z = s.clone().reshape_generic(NaConst {}, NaConst {});
     let tr = (z.transpose() * z).trace();
     // core logic ends ####################################################
@@ -86,7 +86,7 @@ fn test_det3() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_VEC_3>, N_VEC_3> = make::vec(vals);
+    let s: SVector<Ad<N_VEC_3>, N_VEC_3> = var::vector_from_slice(vals);
     let z = s
         .clone()
         // This reshape is COL MAJOR!!!!!!!!!!!!!
@@ -122,7 +122,7 @@ fn test_det4() {
         .collect::<Vec<_>>();
 
     // core logic #########################################################
-    let s: SVector<Ad<N_VEC_4>, N_VEC_4> = make::vec(vals);
+    let s: SVector<Ad<N_VEC_4>, N_VEC_4> = var::vector_from_slice(vals);
     let z = s
         .clone()
         // This reshape is COL MAJOR!!!!!!!!!!!!!
@@ -163,7 +163,7 @@ fn test_mm() {
             .collect::<Vec<_>>();
 
         // core logic #########################################################
-        let s: SVector<Ad<N_VEC_5>, N_VEC_5> = make::vec(vals);
+        let s: SVector<Ad<N_VEC_5>, N_VEC_5> = var::vector_from_slice(vals);
         let mut z = s
             .clone()
             // This reshape is COL MAJOR!!!!!!!!!!!!!

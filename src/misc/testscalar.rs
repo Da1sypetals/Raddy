@@ -3,7 +3,7 @@
 
 use approx::{AbsDiffEq, RelativeEq, UlpsEq};
 use na::{ComplexField, Field, RealField, SimdValue};
-use nalgebra::{Matrix3, SMatrix};
+use na::{Matrix3, SMatrix};
 use num_traits::{FromPrimitive, Num, One, Signed, Zero};
 use simba::scalar::SubsetOf;
 use std::{
