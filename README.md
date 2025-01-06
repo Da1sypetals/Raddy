@@ -20,7 +20,7 @@ fn main() {
     let y = var.sin() * var + var.ln();
     let grad = val * val.cos() + val.sin() + val.recip();
     let hess = -val * val.sin() + 2.0 * val.cos() - val.powi(-2);
-    dbg!((y.grad()[(    0, 0)] - grad).abs());
+    dbg!((y.grad()[(0, 0)] - grad).abs());
     dbg!((y.hess()[(0, 0)] - hess).abs());
 }
 ```
