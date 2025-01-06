@@ -1,3 +1,4 @@
+![](img/raddy.png)
 # Raddy
 Trying to port some portion of [TinyAD](https://github.com/patr-schm/TinyAD) to Rust.
 
