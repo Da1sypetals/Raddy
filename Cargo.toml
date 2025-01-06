@@ -1,11 +1,12 @@
 [package]
 name = "raddy-ad"
-version = "0.0.0-alpha7"
+version = "0.0.0-alpha8"
 edition = "2021"
 license = "Apache-2.0"
 description = "An automatic differentiation system for geometry and simulation."
 repository = "https://github.com/Da1sypetals/Raddy"
 readme = "README.md"
+documentation = "https://docs.rs/raddy-ad"
 keywords = ["mathematics", "graphics", "simulation", "science"]
 
 [lib]

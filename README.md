@@ -12,45 +12,57 @@ raddy-ad = "*"
 ## Scalars
 ```rust
 use raddy::make::var;
+use rand::{thread_rng, Rng};
 
-fn main() {
-    let val = 1.14;
-    let var = var::scalar(val);
-    let var = &var;
-    let y = var.sin() * var + var.ln();
-    let grad = val * val.cos() + val.sin() + val.recip();
-    let hess = -val * val.sin() + 2.0 * val.cos() - val.powi(-2);
-    dbg!((y.grad()[(0, 0)] - grad).abs());
-    dbg!((y.hess()[(0, 0)] - hess).abs());
+fn example_scalar() {
+    // 1. Scalar
+    let mut rng = thread_rng();
+    let val = rng.gen_range(0.0..10.0);
+
+    let x = var::scalar(val);
+    let x = &x; // Please read the Note section in README.
+    let y = x.sin() * x + x.ln();
+
+    dbg!(y.grad()[(0, 0)]);
+    dbg!(y.hess()[(0, 0)]);
 }
 ```
 
 ## Vectors
-The following code depends on `rand` crate.
 ```rust
-let mut rng = thread_rng();
-const N_TEST_MAT_4: usize = 4;
-type NaConst = Const<N_TEST_MAT_4>;
-const N_VEC_4: usize = N_TEST_MAT_4 * N_TEST_MAT_4;
+use nalgebra::{Const, SVector};
+use raddy::{make::var, Ad};
+use rand::{thread_rng, Rng};
 
-let vals: &[f64] = &(0..N_VEC_4)
-    .map(|_| rng.gen_range(-4.0..4.0))
-    .collect::<Vec<_>>();
+fn example_matrix() {
+    // 2. Matrix
+    // initialize, boilerplate code
+    let mut rng = thread_rng();
+    const N_TEST_MAT_4: usize = 4;
+    type NaConst = Const<N_TEST_MAT_4>;
+    const N_VEC_4: usize = N_TEST_MAT_4 * N_TEST_MAT_4;
 
-let s: SVector<Ad<N_VEC_4>, N_VEC_4> = var::vector(vals);
-let z = s
-    .clone()
-    // This reshape is COL MAJOR!!!!!!!!!!!!!
-    .reshape_generic(NaConst {}, NaConst {})
-    .transpose();
+    let vals: &[f64] = &(0..N_VEC_4)
+        .map(|_| rng.gen_range(-4.0..4.0))
+        .collect::<Vec<_>>();
 
-let det = z.determinant();
-println!("{}", y.grad());
-println!("{}", y.hess());
+    // Core logic. You can do any kind of reshaping.
+    let s: SVector<Ad<N_VEC_4>, N_VEC_4> = var::vector_from_slice(vals);
+    let transpose = s
+        .clone()
+        // This reshape is COL MAJOR!!!!!!!!!!!!!
+        .reshape_generic(NaConst {}, NaConst {})
+        .transpose();
+    let z = transpose;
+    let det = z.determinant();
+
+    dbg!(det.grad());
+    dbg!(det.hess());
+}
 ```
 
 ## Sparse
-1. First define your per-element objective:
+1. First define your per-element (per-stencil) objective:
 ```rust
 struct SpringEnergy {
     k: f64,
