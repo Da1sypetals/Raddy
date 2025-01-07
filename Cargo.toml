@@ -1,6 +1,6 @@
 [package]
 name = "raddy-ad"
-version = "0.0.0-alpha9"
+version = "0.0.0-alpha10"
 edition = "2021"
 license = "Apache-2.0"
 description = "An automatic differentiation system for geometry and simulation."
@@ -13,11 +13,11 @@ keywords = ["mathematics", "graphics", "simulation", "science"]
 name = "raddy"
 path = "src/lib.rs"
 
-[[bin]]
+[[example]]
 name = "basic"
 path = "src/examples/basic.rs"
 
-[[bin]]
+[[example]]
 name = "mass-spring"
 path = "src/examples/mass_spring.rs"
 
