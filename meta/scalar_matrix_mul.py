@@ -10,9 +10,7 @@ impl<const N: usize, const R: usize, const C: usize> Mul<{matrix}SMatrix<Ad<N>, 
     type Output = SMatrix<Ad<N>, R, C>;
 
     fn mul(self, rhs: {matrix}SMatrix<Ad<N>, R, C>) -> Self::Output {{
-        let mut res = rhs.clone();
-        res *= self.clone();
-        return res;
+        rhs * self{'.clone()' if scalar_ref else ""}
     }}
 }}
 """

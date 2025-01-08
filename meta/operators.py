@@ -155,7 +155,7 @@ def op_assign(cased_op_name, operator, r_ref):
 // T {operator}= {right}T
 impl<const N: usize> {cased_op_name}Assign<{right}Ad<N>> for Ad<N> {{
     fn {cased_op_name.lower()}_assign(&mut self, rhs: {right}Ad<N>) {{
-        *self = self.clone() {operator} rhs;
+        *self = &*self {operator} rhs;
     }}
 }}
 
