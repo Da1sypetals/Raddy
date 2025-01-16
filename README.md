@@ -1,14 +1,14 @@
 ![](img/raddy.png)
 # Raddy
-Trying to port some portion of [TinyAD](https://github.com/patr-schm/TinyAD) to Rust.
+An automatic differentiation system for geometry and simulation.
+> An attempt to port some portion of [TinyAD](https://github.com/patr-schm/TinyAD) to Rust.
 
 # Usage
 
 First add to your `Cargo.toml`:
 ```toml
-raddy-ad = "*"
+raddy = "*"
 ```
->_Sadly the name `raddy` is occupied by a non-maintaining crate whose owner does not seem to want to negotiate with me. However the lib name (the one you import in your `.rs` code) is still `raddy`_ .
 
 ## Scalars
 ```rust
@@ -36,7 +36,7 @@ use raddy::{make::var, Ad};
 use rand::{thread_rng, Rng};
 
 fn example_matrix() {
-    // 2. Matrix
+    // 2. Vector
     // initialize, boilerplate code
     let mut rng = thread_rng();
     const N_TEST_MAT_4: usize = 4;
@@ -86,7 +86,7 @@ impl ObjectiveFunction<4> for SpringEnergy {
 
 
 ```
-2. Then, define your elements (indices, springs here):
+1. Then, define your elements (indices). Here is an example where each element is DOFs of two nodes on each neo-hookean spring:
 ```rust
 let springs = vec![[0, 1, 2, 3], [2, 3, 4, 5], [0, 1, 4, 5]];
 let x0 = faer::col::from_slice(&[0.0, 0.0, 2.0, 0.0, 1.0, 2.0]).to_owned();

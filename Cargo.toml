@@ -6,7 +6,7 @@ license = "Apache-2.0"
 description = "An automatic differentiation system for geometry and simulation."
 repository = "https://github.com/Da1sypetals/Raddy"
 readme = "README.md"
-documentation = "https://docs.rs/raddy-ad"
+documentation = "https://docs.rs/raddy"
 keywords = ["mathematics", "graphics", "simulation", "science"]
 
 [lib]
@@ -25,7 +25,9 @@ path = "src/examples/mass_spring.rs"
 nalgebra = "0.33.2"
 approx = "0.5.1"
 num-traits = "0.2.19"
-rand = "0.8.5"
 simba = "0.9.0"
 faer = "0.20.1"
 itertools = "0.14.0"
+
+[dev-dependencies]
+rand = "0.8.5"
